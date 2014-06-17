@@ -1,0 +1,1662 @@
+<?xml version='1.0'?>
+<signatures version='1.0'>
+<struct name='TPCircularBuffer' type='{_TPCircularBuffer=&quot;buffer&quot;^v&quot;length&quot;i&quot;tail&quot;i&quot;head&quot;i&quot;fillCount&quot;i}'>
+<field declared_type='void*' name='buffer' type='^v'/>
+<field declared_type='int32_t' name='length' type='i'/>
+<field declared_type='int32_t' name='tail' type='i'/>
+<field declared_type='int32_t' name='head' type='i'/>
+<field declared_type='int32_t volatile' name='fillCount' type='i'/>
+</struct>
+<struct name='TPCircularBufferABLBlockHeader' type='{_TPCircularBufferABLBlockHeader=&quot;timestamp&quot;{AudioTimeStamp=&quot;mSampleTime&quot;d&quot;mHostTime&quot;Q&quot;mRateScalar&quot;d&quot;mWordClockTime&quot;Q&quot;mSMPTETime&quot;{SMPTETime=&quot;mSubframes&quot;s&quot;mSubframeDivisor&quot;s&quot;mCounter&quot;I&quot;mType&quot;I&quot;mFlags&quot;I&quot;mHours&quot;s&quot;mMinutes&quot;s&quot;mSeconds&quot;s&quot;mFrames&quot;s}&quot;mFlags&quot;I&quot;mReserved&quot;I}&quot;totalLength&quot;I&quot;bufferList&quot;{AudioBufferList=&quot;mNumberBuffers&quot;I&quot;mBuffers&quot;[1{AudioBuffer=&quot;mNumberChannels&quot;I&quot;mDataByteSize&quot;I&quot;mData&quot;^v}]}}'>
+<field declared_type='AudioTimeStamp' name='timestamp' type='{AudioTimeStamp=&quot;mSampleTime&quot;d&quot;mHostTime&quot;Q&quot;mRateScalar&quot;d&quot;mWordClockTime&quot;Q&quot;mSMPTETime&quot;{SMPTETime=&quot;mSubframes&quot;s&quot;mSubframeDivisor&quot;s&quot;mCounter&quot;I&quot;mType&quot;I&quot;mFlags&quot;I&quot;mHours&quot;s&quot;mMinutes&quot;s&quot;mSeconds&quot;s&quot;mFrames&quot;s}&quot;mFlags&quot;I&quot;mReserved&quot;I}'/>
+<field declared_type='UInt32' name='totalLength' type='L' type64='I'/>
+<field declared_type='AudioBufferList' name='bufferList' type='{AudioBufferList=&quot;mNumberBuffers&quot;I&quot;mBuffers&quot;[1{AudioBuffer=&quot;mNumberChannels&quot;I&quot;mDataByteSize&quot;I&quot;mData&quot;^v}]}'/>
+</struct>
+<opaque name='AEChannelGroupRef' type='^{_channel_group_t=}'/>
+<constant declared_type='NSString*' name='ABConnectionsChangedNotification' type='@'/>
+<constant const='true' declared_type='NSString*' name='AEAudioControllerDidRecreateGraphNotification' type='@'/>
+<constant const='true' declared_type='NSString*' name='AEAudioControllerSessionInterruptionBeganNotification' type='@'/>
+<constant const='true' declared_type='NSString*' name='AEAudioControllerSessionInterruptionEndedNotification' type='@'/>
+<constant const='true' declared_type='NSString*' name='AEAudioFileWriterErrorDomain' type='@'/>
+<constant const='true' declared_type='NSString*' name='AEBlockSchedulerKeyBlock' type='@'/>
+<constant const='true' declared_type='NSString*' name='AEBlockSchedulerKeyIdentifier' type='@'/>
+<constant const='true' declared_type='NSString*' name='AEBlockSchedulerKeyResponseBlock' type='@'/>
+<constant const='true' declared_type='NSString*' name='AEBlockSchedulerKeyTimestampInHostTicks' type='@'/>
+<constant const='true' declared_type='NSString*' name='AEBlockSchedulerKeyTimingContext' type='@'/>
+<constant declared_type='NSString*' name='AERecorderDidEncounterErrorNotification' type='@'/>
+<constant declared_type='NSString*' name='kAERecorderErrorKey' type='@'/>
+<enum name='ABInputPortAttributeNone' value='0'/>
+<enum name='ABInputPortAttributePlaysLiveAudio' value='1'/>
+<enum name='AEAudioTimingContextInput' value='0'/>
+<enum name='AEAudioTimingContextOutput' value='1'/>
+<enum name='AEExpanderFilterPresetMedium' value='1'/>
+<enum name='AEExpanderFilterPresetNone' value='-1'/>
+<enum name='AEExpanderFilterPresetPercussive' value='2'/>
+<enum name='AEExpanderFilterPresetSmooth' value='0'/>
+<enum name='AEExpanderFilterRatioGateMode' value='0'/>
+<enum name='AEInputModeFixedAudioFormat' value='0'/>
+<enum name='AEInputModeVariableAudioFormat' value='1'/>
+<enum name='AEMixerBufferSourceInactive' value='4294967294'/>
+<enum name='COCOAPODS_VERSION_MAJOR_TheAmazingAudioEngine' value='1'/>
+<enum name='COCOAPODS_VERSION_MINOR_TheAmazingAudioEngine' value='3'/>
+<enum name='COCOAPODS_VERSION_PATCH_TheAmazingAudioEngine' value='0'/>
+<enum name='kAEAudioFileWriterFormatError' value='0'/>
+<enum name='kTPCircularBufferCopyAll' value='4294967295'/>
+<function name='ABInputPortIsConnected'>
+<arg declared_type='ABInputPort*' name='inputPort' type='@'/>
+<retval declared_type='BOOL' type='B'/>
+</function>
+<function name='ABInputPortPeek'>
+<arg declared_type='ABInputPort*' name='inputPort' type='@'/>
+<arg declared_type='AudioTimeStamp*' name='outNextTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</function>
+<function name='ABInputPortReceive'>
+<arg declared_type='ABInputPort*' name='inputPort' type='@'/>
+<arg declared_type='ABPort*' name='sourcePortOrNil' type='@'/>
+<arg declared_type='AudioBufferList*' name='bufferList' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32*' name='ioLengthInFrames' type='^I'/>
+<arg declared_type='AudioTimeStamp*' name='outTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='void**' name='ioMetadataBlockList' type='^^v'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='ABInputPortReceiveLive'>
+<arg declared_type='ABInputPort*' name='inputPort' type='@'/>
+<arg declared_type='AudioBufferList*' name='bufferList' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32' name='lengthInFrames' type='L' type64='I'/>
+<arg declared_type='AudioTimeStamp*' name='outTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='ABOutputPortGetAverageLatency'>
+<arg declared_type='ABOutputPort*' name='outputPort' type='@'/>
+<retval declared_type='NSTimeInterval' type='d'/>
+</function>
+<function name='ABOutputPortGetConnectedPortAttributes'>
+<arg declared_type='ABOutputPort*' name='outputPort' type='@'/>
+<retval declared_type='ABInputPortAttributes' type='I' type64='Q'/>
+</function>
+<function name='ABOutputPortIsConnected'>
+<arg declared_type='ABOutputPort*' name='outputPort' type='@'/>
+<retval declared_type='BOOL' type='B'/>
+</function>
+<function name='ABOutputPortSendAudio'>
+<arg declared_type='ABOutputPort*' name='outputPort' type='@'/>
+<arg const='true' declared_type='AudioBufferList*' name='audio' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32' name='lengthInFrames' type='L' type64='I'/>
+<arg const='true' declared_type='AudioTimeStamp*' name='timestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='void**' name='metadata' type='^^v'/>
+<retval declared_type='BOOL' type='B'/>
+</function>
+<function name='AEAllocateAndInitAudioBufferList'>
+<arg declared_type='AudioStreamBasicDescription' name='audioFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<arg declared_type='int' name='frameCount' type='i'/>
+<retval declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+</function>
+<function name='AEAudioComponentDescriptionMake'>
+<arg declared_type='OSType' name='manufacturer' type='L' type64='I'/>
+<arg declared_type='OSType' name='type' type='L' type64='I'/>
+<arg declared_type='OSType' name='subtype' type='L' type64='I'/>
+<retval declared_type='AudioComponentDescription' type='{AudioComponentDescription=IIIII}'/>
+</function>
+<function name='AEAudioControllerAudioDescription'>
+<arg declared_type='AEAudioController*' name='audioController' type='@'/>
+<retval declared_type='AudioStreamBasicDescription*' type='^{AudioStreamBasicDescription=dIIIIIIII}'/>
+</function>
+<function name='AEAudioControllerInputAudioDescription'>
+<arg declared_type='AEAudioController*' name='audioController' type='@'/>
+<retval declared_type='AudioStreamBasicDescription*' type='^{AudioStreamBasicDescription=dIIIIIIII}'/>
+</function>
+<function name='AEAudioControllerInputLatency'>
+<arg declared_type='AEAudioController*' name='controller' type='@'/>
+<retval declared_type='NSTimeInterval' type='d'/>
+</function>
+<function name='AEAudioControllerOutputLatency'>
+<arg declared_type='AEAudioController*' name='controller' type='@'/>
+<retval declared_type='NSTimeInterval' type='d'/>
+</function>
+<function name='AEAudioControllerSendAsynchronousMessageToMainThread'>
+<arg declared_type='AEAudioController*' name='audioController' type='@'/>
+<arg declared_type='AEAudioControllerMainThreadMessageHandler' function_pointer='true' name='handler' type='^?'>
+<arg declared_type='AEAudioController*' type='@'/>
+<arg declared_type='void*' type='^v'/>
+<arg declared_type='int' type='i'/>
+<retval declared_type='void' type='v'/>
+</arg>
+<arg declared_type='void*' name='userInfo' type='^v'/>
+<arg declared_type='int' name='userInfoLength' type='i'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='AEAudioFileWriterAddAudio'>
+<arg declared_type='AEAudioFileWriter*' name='writer' type='@'/>
+<arg declared_type='AudioBufferList*' name='bufferList' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32' name='lengthInFrames' type='L' type64='I'/>
+<retval declared_type='OSStatus' type='l' type64='i'/>
+</function>
+<function name='AEAudioFileWriterAddAudioSynchronously'>
+<arg declared_type='AEAudioFileWriter*' name='writer' type='@'/>
+<arg declared_type='AudioBufferList*' name='bufferList' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32' name='lengthInFrames' type='L' type64='I'/>
+<retval declared_type='OSStatus' type='l' type64='i'/>
+</function>
+<function name='AEAudioStreamBasicDescriptionSetChannelsPerFrame'>
+<arg declared_type='AudioStreamBasicDescription*' name='audioDescription' type='^{AudioStreamBasicDescription=dIIIIIIII}'/>
+<arg declared_type='int' name='numberOfChannels' type='i'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='AEConvertFramesToSeconds'>
+<arg declared_type='AEAudioController*' name='audioController' type='@'/>
+<arg declared_type='long' name='frames' type='l' type64='q'/>
+<retval declared_type='NSTimeInterval' type='d'/>
+</function>
+<function name='AEConvertSecondsToFrames'>
+<arg declared_type='AEAudioController*' name='audioController' type='@'/>
+<arg declared_type='NSTimeInterval' name='seconds' type='d'/>
+<retval declared_type='long' type='l' type64='q'/>
+</function>
+<function name='AECopyAudioBufferList'>
+<arg declared_type='AudioBufferList*' name='original' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<retval declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+</function>
+<function name='AEFloatConverterFromFloat'>
+<arg declared_type='AEFloatConverter*' name='converter' type='@'/>
+<arg const='true' declared_type='float **' name='sourceBuffers' type='^^f'/>
+<arg declared_type='AudioBufferList*' name='targetBuffer' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32' name='frames' type='L' type64='I'/>
+<retval declared_type='BOOL' type='B'/>
+</function>
+<function name='AEFloatConverterFromFloatBufferList'>
+<arg declared_type='AEFloatConverter*' name='converter' type='@'/>
+<arg declared_type='AudioBufferList*' name='sourceBuffer' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='AudioBufferList*' name='targetBuffer' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32' name='frames' type='L' type64='I'/>
+<retval declared_type='BOOL' type='B'/>
+</function>
+<function name='AEFloatConverterToFloat'>
+<arg declared_type='AEFloatConverter*' name='converter' type='@'/>
+<arg declared_type='AudioBufferList*' name='sourceBuffer' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg const='true' declared_type='float **' name='targetBuffers' type='^^f'/>
+<arg declared_type='UInt32' name='frames' type='L' type64='I'/>
+<retval declared_type='BOOL' type='B'/>
+</function>
+<function name='AEFloatConverterToFloatBufferList'>
+<arg declared_type='AEFloatConverter*' name='converter' type='@'/>
+<arg declared_type='AudioBufferList*' name='sourceBuffer' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='AudioBufferList*' name='targetBuffer' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32' name='frames' type='L' type64='I'/>
+<retval declared_type='BOOL' type='B'/>
+</function>
+<function name='AEFreeAudioBufferList'>
+<arg declared_type='AudioBufferList*' name='bufferList' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='AEGetNumberOfFramesInAudioBufferList'>
+<arg declared_type='AudioBufferList*' name='list' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='AudioStreamBasicDescription' name='audioFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<arg declared_type='int*' name='oNumberOfChannels' type='^i'/>
+<retval declared_type='int' type='i'/>
+</function>
+<function name='AEInitAudioBufferList'>
+<arg declared_type='AudioBufferList*' name='list' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='int' name='listSize' type='i'/>
+<arg declared_type='AudioStreamBasicDescription' name='audioFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<arg declared_type='void*' name='data' type='^v'/>
+<arg declared_type='int' name='dataSize' type='i'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='AELimiterDequeue'>
+<arg declared_type='AELimiter*' name='limiter' type='@'/>
+<arg declared_type='float**' name='buffers' type='^^f'/>
+<arg declared_type='UInt32*' name='ioLength' type='^I'/>
+<arg declared_type='AudioTimeStamp*' name='timestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='AELimiterDrain'>
+<arg declared_type='AELimiter*' name='limiter' type='@'/>
+<arg declared_type='float**' name='buffers' type='^^f'/>
+<arg declared_type='UInt32*' name='ioLength' type='^I'/>
+<arg declared_type='AudioTimeStamp*' name='timestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='AELimiterEnqueue'>
+<arg declared_type='AELimiter*' name='limiter' type='@'/>
+<arg declared_type='float**' name='buffers' type='^^f'/>
+<arg declared_type='UInt32' name='length' type='L' type64='I'/>
+<arg const='true' declared_type='AudioTimeStamp*' name='timestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<retval declared_type='BOOL' type='B'/>
+</function>
+<function name='AELimiterFillCount'>
+<arg declared_type='AELimiter*' name='limiter' type='@'/>
+<arg declared_type='AudioTimeStamp*' name='timestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32*' name='trueFillCount' type='^I'/>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</function>
+<function name='AELimiterReset'>
+<arg declared_type='AELimiter*' name='limiter' type='@'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='AEMixerBufferDequeue'>
+<arg declared_type='AEMixerBuffer*' name='mixerBuffer' type='@'/>
+<arg declared_type='AudioBufferList*' name='bufferList' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32*' name='ioLengthInFrames' type='^I'/>
+<arg declared_type='AudioTimeStamp*' name='outTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='AEMixerBufferDequeueSingleSource'>
+<arg declared_type='AEMixerBuffer*' name='mixerBuffer' type='@'/>
+<arg declared_type='AEMixerBufferSource' name='source' type='^v'/>
+<arg declared_type='AudioBufferList*' name='bufferList' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32*' name='ioLengthInFrames' type='^I'/>
+<arg declared_type='AudioTimeStamp*' name='outTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='AEMixerBufferEndTimeInterval'>
+<arg declared_type='AEMixerBuffer*' name='mixerBuffer' type='@'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='AEMixerBufferEnqueue'>
+<arg declared_type='AEMixerBuffer*' name='mixerBuffer' type='@'/>
+<arg declared_type='AEMixerBufferSource' name='source' type='^v'/>
+<arg declared_type='AudioBufferList*' name='audio' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32' name='lengthInFrames' type='L' type64='I'/>
+<arg const='true' declared_type='AudioTimeStamp*' name='timestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='AEMixerBufferMarkSourceIdle'>
+<arg declared_type='AEMixerBuffer*' name='mixerBuffer' type='@'/>
+<arg declared_type='AEMixerBufferSource' name='source' type='^v'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='AEMixerBufferPeek'>
+<arg declared_type='AEMixerBuffer*' name='mixerBuffer' type='@'/>
+<arg declared_type='AudioTimeStamp*' name='outNextTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</function>
+<function name='AERecorderStartRecording'>
+<arg declared_type='AERecorder*' name='recorder' type='@'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='TPCircularBufferCleanup'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='TPCircularBufferClear'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function inline='true' name='TPCircularBufferConsume'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='int32_t' name='amount' type='i'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function inline='true' name='TPCircularBufferConsumeNextBufferList'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='TPCircularBufferConsumeNextBufferListPartial'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='int' name='framesToConsume' type='i'/>
+<arg const='true' declared_type='AudioStreamBasicDescription*' name='audioFormat' type='^{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function inline='true' name='TPCircularBufferConsumeNoBarrier'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='int32_t' name='amount' type='i'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='TPCircularBufferCopyAudioBufferList'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg const='true' declared_type='AudioBufferList*' name='bufferList' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg const='true' declared_type='AudioTimeStamp*' name='timestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32' name='frames' type='L' type64='I'/>
+<arg const='true' declared_type='AudioStreamBasicDescription*' name='audioFormat' type='^{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='_Bool' type='B'/>
+</function>
+<function name='TPCircularBufferDequeueBufferListFrames'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='UInt32*' name='ioLengthInFrames' type='^I'/>
+<arg declared_type='AudioBufferList*' name='outputBufferList' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='AudioTimeStamp*' name='outTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg const='true' declared_type='AudioStreamBasicDescription*' name='audioFormat' type='^{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function inline='true' name='TPCircularBufferGetAvailableSpace'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg const='true' declared_type='AudioStreamBasicDescription*' name='audioFormat' type='^{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</function>
+<function inline='true' name='TPCircularBufferHead'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='int32_t*' name='availableBytes' type='^i'/>
+<retval declared_type='void*' type='^v'/>
+</function>
+<function name='TPCircularBufferInit'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='int32_t' name='length' type='i'/>
+<retval declared_type='_Bool' type='B'/>
+</function>
+<function inline='true' name='TPCircularBufferNextBufferList'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='AudioTimeStamp*' name='outTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<retval declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+</function>
+<function name='TPCircularBufferNextBufferListAfter'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='AudioBufferList*' name='bufferList' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='AudioTimeStamp*' name='outTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<retval declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+</function>
+<function name='TPCircularBufferPeek'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='AudioTimeStamp*' name='outTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg const='true' declared_type='AudioStreamBasicDescription*' name='audioFormat' type='^{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</function>
+<function name='TPCircularBufferPeekContiguous'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='AudioTimeStamp*' name='outTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg const='true' declared_type='AudioStreamBasicDescription*' name='audioFormat' type='^{AudioStreamBasicDescription=dIIIIIIII}'/>
+<arg declared_type='UInt32' name='contiguousToleranceSampleTime' type='L' type64='I'/>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</function>
+<function name='TPCircularBufferPrepareEmptyAudioBufferList'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='int' name='numberOfBuffers' type='i'/>
+<arg declared_type='int' name='bytesPerBuffer' type='i'/>
+<arg const='true' declared_type='AudioTimeStamp*' name='timestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<retval declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+</function>
+<function name='TPCircularBufferPrepareEmptyAudioBufferListWithAudioFormat'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='AudioStreamBasicDescription*' name='audioFormat' type='^{AudioStreamBasicDescription=dIIIIIIII}'/>
+<arg declared_type='UInt32' name='frameCount' type='L' type64='I'/>
+<arg const='true' declared_type='AudioTimeStamp*' name='timestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<retval declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+</function>
+<function inline='true' name='TPCircularBufferProduce'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='int' name='amount' type='i'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function name='TPCircularBufferProduceAudioBufferList'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg const='true' declared_type='AudioTimeStamp*' name='inTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function inline='true' name='TPCircularBufferProduceBytes'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg const='true' declared_type='void*' name='src' type='^v'/>
+<arg declared_type='int32_t' name='len' type='i'/>
+<retval declared_type='_Bool' type='B'/>
+</function>
+<function inline='true' name='TPCircularBufferProduceNoBarrier'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='int' name='amount' type='i'/>
+<retval declared_type='void' type='v'/>
+</function>
+<function inline='true' name='TPCircularBufferTail'>
+<arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
+<arg declared_type='int32_t*' name='availableBytes' type='^i'/>
+<retval declared_type='void*' type='^v'/>
+</function>
+<class name='AEAudioController'>
+<method selector='addChannels:'>
+<arg declared_type='NSArray*' index='0' name='channels' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='addChannels:toChannelGroup:'>
+<arg declared_type='NSArray*' index='0' name='channels' type='@'/>
+<arg declared_type='AEChannelGroupRef' index='1' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='addFilter:'>
+<arg declared_type='id' index='0' name='filter' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='addFilter:toChannel:'>
+<arg declared_type='id' index='0' name='filter' type='@'/>
+<arg declared_type='id' index='1' name='channel' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='addFilter:toChannelGroup:'>
+<arg declared_type='id' index='0' name='filter' type='@'/>
+<arg declared_type='AEChannelGroupRef' index='1' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='addInputFilter:'>
+<arg declared_type='id' index='0' name='filter' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='addInputFilter:forChannels:'>
+<arg declared_type='id' index='0' name='filter' type='@'/>
+<arg declared_type='NSArray*' index='1' name='channels' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='addInputReceiver:'>
+<arg declared_type='id' index='0' name='receiver' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='addInputReceiver:forChannels:'>
+<arg declared_type='id' index='0' name='receiver' type='@'/>
+<arg declared_type='NSArray*' index='1' name='channels' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='addOutputReceiver:'>
+<arg declared_type='id' index='0' name='receiver' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='addOutputReceiver:forChannel:'>
+<arg declared_type='id' index='0' name='receiver' type='@'/>
+<arg declared_type='id' index='1' name='channel' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='addOutputReceiver:forChannelGroup:'>
+<arg declared_type='id' index='0' name='receiver' type='@'/>
+<arg declared_type='AEChannelGroupRef' index='1' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='addTimingReceiver:'>
+<arg declared_type='id' index='0' name='receiver' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='allowMixingWithOtherApps'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='audioDescription'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='audioGraph'>
+<retval declared_type='AUGraph' type='^{OpaqueAUGraph=}'/>
+</method>
+<method selector='audioInputAvailable'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='audioRoute'>
+<retval declared_type='NSString*' type='@'/>
+</method>
+<method selector='audioSessionCategory'>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</method>
+<method selector='audioUnit'>
+<retval declared_type='AudioUnit' type='^{OpaqueAudioComponentInstance=}'/>
+</method>
+<method class_method='true' selector='audioUnitCanonicalAudioDescription'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='audiobusInputPort'>
+<retval declared_type='ABInputPort*' type='@'/>
+</method>
+<method selector='audiobusOutputPort'>
+<retval declared_type='ABOutputPort*' type='@'/>
+</method>
+<method selector='averagePowerLevel:peakHoldLevel:forGroup:'>
+<arg declared_type='Float32*' index='0' name='averagePower' type='^f'/>
+<arg declared_type='Float32*' index='1' name='peakLevel' type='^f'/>
+<arg declared_type='AEChannelGroupRef' index='2' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='channelGroupIsMuted:'>
+<arg declared_type='AEChannelGroupRef' index='0' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='channelGroupsInChannelGroup:'>
+<arg declared_type='AEChannelGroupRef' index='0' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method selector='channels'>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method selector='channelsInChannelGroup:'>
+<arg declared_type='AEChannelGroupRef' index='0' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method selector='createChannelGroup'>
+<retval declared_type='AEChannelGroupRef' type='^{_channel_group_t=}'/>
+</method>
+<method selector='createChannelGroupWithinChannelGroup:'>
+<arg declared_type='AEChannelGroupRef' index='0' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='AEChannelGroupRef' type='^{_channel_group_t=}'/>
+</method>
+<method selector='currentBufferDuration'>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='enableBluetoothInput'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='filters'>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method selector='filtersForChannel:'>
+<arg declared_type='id' index='0' name='channel' type='@'/>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method selector='filtersForChannelGroup:'>
+<arg declared_type='AEChannelGroupRef' index='0' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method selector='initWithAudioDescription:'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='audioDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='initWithAudioDescription:inputEnabled:'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='audioDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<arg declared_type='BOOL' index='1' name='enableInput' type='B'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='initWithAudioDescription:inputEnabled:useVoiceProcessing:'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='audioDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<arg declared_type='BOOL' index='1' name='enableInput' type='B'/>
+<arg declared_type='BOOL' index='2' name='useVoiceProcessing' type='B'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='inputAudioDescription'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='inputAveragePowerLevel:peakHoldLevel:'>
+<arg declared_type='Float32*' index='0' name='averagePower' type='^f'/>
+<arg declared_type='Float32*' index='1' name='peakLevel' type='^f'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='inputChannelSelection'>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method selector='inputFilters'>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method selector='inputGain'>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='inputGainAvailable'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='inputLatency'>
+<retval declared_type='NSTimeInterval' type='d'/>
+</method>
+<method selector='inputMode'>
+<retval declared_type='AEInputMode' type='i'/>
+</method>
+<method selector='inputReceivers'>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method class_method='true' selector='interleaved16BitStereoAudioDescription'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='masterOutputVolume'>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='muteOutput'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method class_method='true' selector='nonInterleaved16BitStereoAudioDescription'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method class_method='true' selector='nonInterleavedFloatStereoAudioDescription'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='numberOfInputChannels'>
+<retval declared_type='NSUInteger' type='I' type64='Q'/>
+</method>
+<method selector='outputAveragePowerLevel:peakHoldLevel:'>
+<arg declared_type='Float32*' index='0' name='averagePower' type='^f'/>
+<arg declared_type='Float32*' index='1' name='peakLevel' type='^f'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='outputLatency'>
+<retval declared_type='NSTimeInterval' type='d'/>
+</method>
+<method selector='outputReceivers'>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method selector='outputReceiversForChannel:'>
+<arg declared_type='id' index='0' name='channel' type='@'/>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method selector='outputReceiversForChannelGroup:'>
+<arg declared_type='AEChannelGroupRef' index='0' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method selector='panForChannelGroup:'>
+<arg declared_type='AEChannelGroupRef' index='0' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='performAsynchronousMessageExchangeWithBlock:responseBlock:'>
+<arg declared_type='void (^)()' function_pointer='true' index='0' name='block' type='@?'>
+<retval declared_type='void' type='v'/>
+</arg>
+<arg declared_type='void (^)()' function_pointer='true' index='1' name='responseBlock' type='@?'>
+<retval declared_type='void' type='v'/>
+</arg>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='performSynchronousMessageExchangeWithBlock:'>
+<arg declared_type='void (^)()' function_pointer='true' index='0' name='block' type='@?'>
+<retval declared_type='void' type='v'/>
+</arg>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='playingThroughDeviceSpeaker'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='preferredBufferDuration'>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='removeChannelGroup:'>
+<arg declared_type='AEChannelGroupRef' index='0' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='removeChannels:'>
+<arg declared_type='NSArray*' index='0' name='channels' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='removeChannels:fromChannelGroup:'>
+<arg declared_type='NSArray*' index='0' name='channels' type='@'/>
+<arg declared_type='AEChannelGroupRef' index='1' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='removeFilter:'>
+<arg declared_type='id' index='0' name='filter' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='removeFilter:fromChannel:'>
+<arg declared_type='id' index='0' name='filter' type='@'/>
+<arg declared_type='id' index='1' name='channel' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='removeFilter:fromChannelGroup:'>
+<arg declared_type='id' index='0' name='filter' type='@'/>
+<arg declared_type='AEChannelGroupRef' index='1' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='removeInputFilter:'>
+<arg declared_type='id' index='0' name='filter' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='removeInputReceiver:'>
+<arg declared_type='id' index='0' name='receiver' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='removeOutputReceiver:'>
+<arg declared_type='id' index='0' name='receiver' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='removeOutputReceiver:fromChannel:'>
+<arg declared_type='id' index='0' name='receiver' type='@'/>
+<arg declared_type='id' index='1' name='channel' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='removeOutputReceiver:fromChannelGroup:'>
+<arg declared_type='id' index='0' name='receiver' type='@'/>
+<arg declared_type='AEChannelGroupRef' index='1' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='removeTimingReceiver:'>
+<arg declared_type='id' index='0' name='receiver' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='running'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='setAllowMixingWithOtherApps:'>
+<arg declared_type='BOOL' index='0' name='allowMixingWithOtherApps' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setAudioSessionCategory:'>
+<arg declared_type='UInt32' index='0' name='audioSessionCategory' type='L' type64='I'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setAudiobusInputPort:'>
+<arg declared_type='ABInputPort*' index='0' name='audiobusInputPort' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setAudiobusOutputPort:'>
+<arg declared_type='ABOutputPort*' index='0' name='audiobusOutputPort' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setAudiobusOutputPort:forChannel:'>
+<arg declared_type='ABOutputPort*' index='0' name='outputPort' type='@'/>
+<arg declared_type='id' index='1' name='channel' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setAudiobusOutputPort:forChannelGroup:'>
+<arg declared_type='ABOutputPort*' index='0' name='outputPort' type='@'/>
+<arg declared_type='AEChannelGroupRef' index='1' name='channelGroup' type='^{_channel_group_t=}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setEnableBluetoothInput:'>
+<arg declared_type='BOOL' index='0' name='enableBluetoothInput' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setInputChannelSelection:'>
+<arg declared_type='NSArray*' index='0' name='inputChannelSelection' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setInputGain:'>
+<arg declared_type='float' index='0' name='inputGain' type='f'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setInputMode:'>
+<arg declared_type='AEInputMode' index='0' name='inputMode' type='i'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setMasterOutputVolume:'>
+<arg declared_type='float' index='0' name='masterOutputVolume' type='f'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setMuteOutput:'>
+<arg declared_type='BOOL' index='0' name='muteOutput' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setMuted:forChannelGroup:'>
+<arg declared_type='BOOL' index='0' name='muted' type='B'/>
+<arg declared_type='AEChannelGroupRef' index='1' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setPan:forChannelGroup:'>
+<arg declared_type='float' index='0' name='pan' type='f'/>
+<arg declared_type='AEChannelGroupRef' index='1' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setPreferredBufferDuration:'>
+<arg declared_type='float' index='0' name='preferredBufferDuration' type='f'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setVoiceProcessingEnabled:'>
+<arg declared_type='BOOL' index='0' name='voiceProcessingEnabled' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setVoiceProcessingOnlyForSpeakerAndMicrophone:'>
+<arg declared_type='BOOL' index='0' name='voiceProcessingOnlyForSpeakerAndMicrophone' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setVolume:forChannelGroup:'>
+<arg declared_type='float' index='0' name='volume' type='f'/>
+<arg declared_type='AEChannelGroupRef' index='1' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='start:'>
+<arg declared_type='NSError**' index='0' name='error' type='^@'/>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='stop'>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='timingReceivers'>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method selector='topLevelChannelGroups'>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method class_method='true' selector='voiceProcessingAvailable'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='voiceProcessingEnabled'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='voiceProcessingOnlyForSpeakerAndMicrophone'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='volumeForChannelGroup:'>
+<arg declared_type='AEChannelGroupRef' index='0' name='group' type='^{_channel_group_t=}'/>
+<retval declared_type='float' type='f'/>
+</method>
+</class>
+<class name='AEAudioFileLoaderOperation'>
+<method selector='audioReceiverBlock'>
+<retval declared_type='void (^)(AudioBufferList *, UInt32)' function_pointer='true' type='@?'>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<retval declared_type='void' type='v'/>
+</retval>
+</method>
+<method selector='bufferList'>
+<retval declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+</method>
+<method selector='error'>
+<retval declared_type='NSError*' type='@'/>
+</method>
+<method class_method='true' selector='infoForFileAtURL:audioDescription:lengthInFrames:error:'>
+<arg declared_type='NSURL*' index='0' name='url' type='@'/>
+<arg declared_type='AudioStreamBasicDescription*' index='1' name='audioDescription' type='^{AudioStreamBasicDescription=dIIIIIIII}'/>
+<arg declared_type='UInt32*' index='2' name='lengthInFrames' type='^I'/>
+<arg declared_type='NSError**' index='3' name='error' type='^@'/>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='initWithFileURL:targetAudioDescription:'>
+<arg declared_type='NSURL*' index='0' name='url' type='@'/>
+<arg declared_type='AudioStreamBasicDescription' index='1' name='audioDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='lengthInFrames'>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</method>
+<method selector='setAudioReceiverBlock:'>
+<arg declared_type='void (^)(AudioBufferList *, UInt32)' function_pointer='true' index='0' name='audioReceiverBlock' type='@?'>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<retval declared_type='void' type='v'/>
+</arg>
+<retval declared_type='void' type='v'/>
+</method>
+</class>
+<class name='AEAudioFilePlayer'>
+<method class_method='true' selector='audioFilePlayerWithURL:audioController:error:'>
+<arg declared_type='NSURL*' index='0' name='url' type='@'/>
+<arg declared_type='AEAudioController*' index='1' name='audioController' type='@'/>
+<arg declared_type='NSError**' index='2' name='error' type='^@'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='channelIsMuted'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='channelIsPlaying'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='completionBlock'>
+<retval declared_type='void (^)()' function_pointer='true' type='@?'>
+<retval declared_type='void' type='v'/>
+</retval>
+</method>
+<method selector='currentTime'>
+<retval declared_type='NSTimeInterval' type='d'/>
+</method>
+<method selector='duration'>
+<retval declared_type='NSTimeInterval' type='d'/>
+</method>
+<method selector='loop'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='pan'>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='removeUponFinish'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='setChannelIsMuted:'>
+<arg declared_type='BOOL' index='0' name='channelIsMuted' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setChannelIsPlaying:'>
+<arg declared_type='BOOL' index='0' name='channelIsPlaying' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setCompletionBlock:'>
+<arg declared_type='void (^)()' function_pointer='true' index='0' name='completionBlock' type='@?'>
+<retval declared_type='void' type='v'/>
+</arg>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setCurrentTime:'>
+<arg declared_type='NSTimeInterval' index='0' name='currentTime' type='d'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setLoop:'>
+<arg declared_type='BOOL' index='0' name='loop' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setPan:'>
+<arg declared_type='float' index='0' name='pan' type='f'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setRemoveUponFinish:'>
+<arg declared_type='BOOL' index='0' name='removeUponFinish' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setStartLoopBlock:'>
+<arg declared_type='void (^)()' function_pointer='true' index='0' name='startLoopBlock' type='@?'>
+<retval declared_type='void' type='v'/>
+</arg>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setVolume:'>
+<arg declared_type='float' index='0' name='volume' type='f'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='startLoopBlock'>
+<retval declared_type='void (^)()' function_pointer='true' type='@?'>
+<retval declared_type='void' type='v'/>
+</retval>
+</method>
+<method selector='url'>
+<retval declared_type='NSURL*' type='@'/>
+</method>
+<method selector='volume'>
+<retval declared_type='float' type='f'/>
+</method>
+</class>
+<class name='AEAudioFileWriter'>
+<method class_method='true' selector='AACEncodingAvailable'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='beginWritingToFileAtPath:fileType:error:'>
+<arg declared_type='NSString*' index='0' name='path' type='@'/>
+<arg declared_type='AudioFileTypeID' index='1' name='fileType' type='L' type64='I'/>
+<arg declared_type='NSError**' index='2' name='error' type='^@'/>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='finishWriting'>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='initWithAudioDescription:'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='audioDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='path'>
+<retval declared_type='NSString*' type='@'/>
+</method>
+</class>
+<class name='AEAudioUnitChannel'>
+<method selector='audioGraphNode'>
+<retval declared_type='AUNode' type='l' type64='i'/>
+</method>
+<method selector='audioUnit'>
+<retval declared_type='AudioUnit' type='^{OpaqueAudioComponentInstance=}'/>
+</method>
+<method selector='channelIsMuted'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='channelIsPlaying'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='initWithComponentDescription:audioController:error:'>
+<arg declared_type='AudioComponentDescription' index='0' name='audioComponentDescription' type='{AudioComponentDescription=IIIII}'/>
+<arg declared_type='AEAudioController*' index='1' name='audioController' type='@'/>
+<arg declared_type='NSError**' index='2' name='error' type='^@'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='initWithComponentDescription:audioController:preInitializeBlock:error:'>
+<arg declared_type='AudioComponentDescription' index='0' name='audioComponentDescription' type='{AudioComponentDescription=IIIII}'/>
+<arg declared_type='AEAudioController*' index='1' name='audioController' type='@'/>
+<arg declared_type='void (^)(AudioUnit)' function_pointer='true' index='2' name='block' type='@?'>
+<arg declared_type='AudioUnit' type='^{OpaqueAudioComponentInstance=}'/>
+<retval declared_type='void' type='v'/>
+</arg>
+<arg declared_type='NSError**' index='3' name='error' type='^@'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='pan'>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='setChannelIsMuted:'>
+<arg declared_type='BOOL' index='0' name='channelIsMuted' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setChannelIsPlaying:'>
+<arg declared_type='BOOL' index='0' name='channelIsPlaying' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setPan:'>
+<arg declared_type='float' index='0' name='pan' type='f'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setVolume:'>
+<arg declared_type='float' index='0' name='volume' type='f'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='volume'>
+<retval declared_type='float' type='f'/>
+</method>
+</class>
+<class name='AEAudioUnitFilter'>
+<method selector='audioGraphNode'>
+<retval declared_type='AUNode' type='l' type64='i'/>
+</method>
+<method selector='audioUnit'>
+<retval declared_type='AudioUnit' type='^{OpaqueAudioComponentInstance=}'/>
+</method>
+<method selector='initWithComponentDescription:audioController:error:'>
+<arg declared_type='AudioComponentDescription' index='0' name='audioComponentDescription' type='{AudioComponentDescription=IIIII}'/>
+<arg declared_type='AEAudioController*' index='1' name='audioController' type='@'/>
+<arg declared_type='NSError**' index='2' name='error' type='^@'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='initWithComponentDescription:audioController:useDefaultInputFormat:error:'>
+<arg declared_type='AudioComponentDescription' index='0' name='audioComponentDescription' type='{AudioComponentDescription=IIIII}'/>
+<arg declared_type='AEAudioController*' index='1' name='audioController' type='@'/>
+<arg declared_type='BOOL' index='2' name='useDefaultInputFormat' type='B'/>
+<arg declared_type='NSError**' index='3' name='error' type='^@'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='initWithComponentDescription:audioController:useDefaultInputFormat:preInitializeBlock:error:'>
+<arg declared_type='AudioComponentDescription' index='0' name='audioComponentDescription' type='{AudioComponentDescription=IIIII}'/>
+<arg declared_type='AEAudioController*' index='1' name='audioController' type='@'/>
+<arg declared_type='BOOL' index='2' name='useDefaultInputFormat' type='B'/>
+<arg declared_type='void (^)(AudioUnit)' function_pointer='true' index='3' name='block' type='@?'>
+<arg declared_type='AudioUnit' type='^{OpaqueAudioComponentInstance=}'/>
+<retval declared_type='void' type='v'/>
+</arg>
+<arg declared_type='NSError**' index='4' name='error' type='^@'/>
+<retval declared_type='id' type='@'/>
+</method>
+</class>
+<class name='AEBlockAudioReceiver'>
+<method class_method='true' selector='audioReceiverWithBlock:'>
+<arg declared_type='AEBlockAudioReceiverBlock' function_pointer='true' index='0' name='block' type='@?'>
+<arg declared_type='void*' type='^v'/>
+<arg const='true' declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<retval declared_type='void' type='v'/>
+</arg>
+<retval declared_type='AEBlockAudioReceiver*' type='@'/>
+</method>
+</class>
+<class name='AEBlockChannel'>
+<method selector='audioDescription'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='channelIsMuted'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='channelIsPlaying'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method class_method='true' selector='channelWithBlock:'>
+<arg declared_type='AEBlockChannelBlock' function_pointer='true' index='0' name='block' type='@?'>
+<arg const='true' declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<retval declared_type='void' type='v'/>
+</arg>
+<retval declared_type='AEBlockChannel*' type='@'/>
+</method>
+<method selector='pan'>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='setAudioDescription:'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='audioDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setChannelIsMuted:'>
+<arg declared_type='BOOL' index='0' name='channelIsMuted' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setChannelIsPlaying:'>
+<arg declared_type='BOOL' index='0' name='channelIsPlaying' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setPan:'>
+<arg declared_type='float' index='0' name='pan' type='f'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setVolume:'>
+<arg declared_type='float' index='0' name='volume' type='f'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='volume'>
+<retval declared_type='float' type='f'/>
+</method>
+</class>
+<class name='AEBlockFilter'>
+<method selector='audioDescription'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method class_method='true' selector='filterWithBlock:'>
+<arg declared_type='AEBlockFilterBlock' function_pointer='true' index='0' name='block' type='@?'>
+<arg declared_type='AEAudioControllerFilterProducer' function_pointer='true' type='^?'>
+<arg declared_type='void*' type='^v'/>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32*' type='^I'/>
+<retval declared_type='OSStatus' type='l' type64='i'/>
+</arg>
+<arg declared_type='void*' type='^v'/>
+<arg const='true' declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<retval declared_type='void' type='v'/>
+</arg>
+<retval declared_type='AEBlockFilter*' type='@'/>
+</method>
+<method selector='setAudioDescription:'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='audioDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='void' type='v'/>
+</method>
+</class>
+<class name='AEBlockScheduler'>
+<method selector='cancelScheduleWithIdentifier:'>
+<arg declared_type='id' index='0' name='identifier' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method class_method='true' selector='hostTicksFromSeconds:'>
+<arg declared_type='NSTimeInterval' index='0' name='seconds' type='d'/>
+<retval declared_type='uint64_t' type='Q'/>
+</method>
+<method selector='infoForScheduleWithIdentifier:'>
+<arg declared_type='id' index='0' name='identifier' type='@'/>
+<retval declared_type='NSDictionary*' type='@'/>
+</method>
+<method selector='initWithAudioController:'>
+<arg declared_type='AEAudioController*' index='0' name='audioController' type='@'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method class_method='true' selector='now'>
+<retval declared_type='uint64_t' type='Q'/>
+</method>
+<method selector='scheduleBlock:atTime:timingContext:identifier:'>
+<arg declared_type='AEBlockSchedulerBlock' function_pointer='true' index='0' name='block' type='@?'>
+<arg const='true' declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<retval declared_type='void' type='v'/>
+</arg>
+<arg declared_type='uint64_t' index='1' name='time' type='Q'/>
+<arg declared_type='AEAudioTimingContext' index='2' name='context' type='i'/>
+<arg declared_type='id' index='3' name='identifier' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='scheduleBlock:atTime:timingContext:identifier:mainThreadResponseBlock:'>
+<arg declared_type='AEBlockSchedulerBlock' function_pointer='true' index='0' name='block' type='@?'>
+<arg const='true' declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<retval declared_type='void' type='v'/>
+</arg>
+<arg declared_type='uint64_t' index='1' name='time' type='Q'/>
+<arg declared_type='AEAudioTimingContext' index='2' name='context' type='i'/>
+<arg declared_type='id' index='3' name='identifier' type='@'/>
+<arg declared_type='AEBlockSchedulerResponseBlock' function_pointer='true' index='4' name='response' type='@?'>
+<retval declared_type='void' type='v'/>
+</arg>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='schedules'>
+<retval declared_type='NSArray*' type='@'/>
+</method>
+<method class_method='true' selector='secondsFromHostTicks:'>
+<arg declared_type='uint64_t' index='0' name='ticks' type='Q'/>
+<retval declared_type='NSTimeInterval' type='d'/>
+</method>
+<method class_method='true' selector='secondsUntilTimestamp:'>
+<arg declared_type='uint64_t' index='0' name='timestamp' type='Q'/>
+<retval declared_type='NSTimeInterval' type='d'/>
+</method>
+<method class_method='true' selector='timestampWithSeconds:fromTimestamp:'>
+<arg declared_type='NSTimeInterval' index='0' name='seconds' type='d'/>
+<arg declared_type='uint64_t' index='1' name='timeStamp' type='Q'/>
+<retval declared_type='uint64_t' type='Q'/>
+</method>
+<method class_method='true' selector='timestampWithSecondsFromNow:'>
+<arg declared_type='NSTimeInterval' index='0' name='seconds' type='d'/>
+<retval declared_type='uint64_t' type='Q'/>
+</method>
+</class>
+<class name='AEExpanderFilter'>
+<method selector='assignPreset:'>
+<arg declared_type='AEExpanderFilterPreset' index='0' name='preset' type='i'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='attack'>
+<retval declared_type='NSTimeInterval' type='d'/>
+</method>
+<method selector='clientFormat'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='decay'>
+<retval declared_type='NSTimeInterval' type='d'/>
+</method>
+<method selector='hysteresis'>
+<retval declared_type='double' type='d'/>
+</method>
+<method selector='initWithAudioController:'>
+<arg declared_type='AEAudioController*' index='0' name='audioController' type='@'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='ratio'>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='setAttack:'>
+<arg declared_type='NSTimeInterval' index='0' name='attack' type='d'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setClientFormat:'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='clientFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setDecay:'>
+<arg declared_type='NSTimeInterval' index='0' name='decay' type='d'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setHysteresis:'>
+<arg declared_type='double' index='0' name='hysteresis' type='d'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setRatio:'>
+<arg declared_type='float' index='0' name='ratio' type='f'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setThreshold:'>
+<arg declared_type='double' index='0' name='threshold' type='d'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='startCalibratingWithCompletionBlock:'>
+<arg declared_type='void (^)(void)' function_pointer='true' index='0' name='block' type='@?'>
+<retval declared_type='void' type='v'/>
+</arg>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='threshold'>
+<retval declared_type='double' type='d'/>
+</method>
+</class>
+<class name='AEFloatConverter'>
+<method selector='floatingPointAudioDescription'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='initWithSourceFormat:'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='sourceFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='setSourceFormat:'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='sourceFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='sourceFormat'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+</class>
+<class name='AELimiter'>
+<method selector='attack'>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</method>
+<method selector='decay'>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</method>
+<method selector='hold'>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</method>
+<method selector='initWithNumberOfChannels:sampleRate:'>
+<arg declared_type='NSInteger' index='0' name='numberOfChannels' type='i' type64='q'/>
+<arg declared_type='Float32' index='1' name='sampleRate' type='f'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='level'>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='setAttack:'>
+<arg declared_type='UInt32' index='0' name='attack' type='L' type64='I'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setDecay:'>
+<arg declared_type='UInt32' index='0' name='decay' type='L' type64='I'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setHold:'>
+<arg declared_type='UInt32' index='0' name='hold' type='L' type64='I'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setLevel:'>
+<arg declared_type='float' index='0' name='level' type='f'/>
+<retval declared_type='void' type='v'/>
+</method>
+</class>
+<class name='AELimiterFilter'>
+<method selector='attack'>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</method>
+<method selector='clientFormat'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='decay'>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</method>
+<method selector='hold'>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</method>
+<method selector='initWithAudioController:'>
+<arg declared_type='AEAudioController*' index='0' name='audioController' type='@'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='level'>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='setAttack:'>
+<arg declared_type='UInt32' index='0' name='attack' type='L' type64='I'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setClientFormat:'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='clientFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setDecay:'>
+<arg declared_type='UInt32' index='0' name='decay' type='L' type64='I'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setHold:'>
+<arg declared_type='UInt32' index='0' name='hold' type='L' type64='I'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setLevel:'>
+<arg declared_type='float' index='0' name='level' type='f'/>
+<retval declared_type='void' type='v'/>
+</method>
+</class>
+<class name='AEMixerBuffer'>
+<method selector='assumeInfiniteSources'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='clientFormat'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='debugLevel'>
+<retval declared_type='int' type='i'/>
+</method>
+<method selector='initWithClientFormat:'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='clientFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='panForSource:'>
+<arg declared_type='AEMixerBufferSource' index='0' name='source' type='^v'/>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='setAssumeInfiniteSources:'>
+<arg declared_type='BOOL' index='0' name='assumeInfiniteSources' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setAudioDescription:forSource:'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='audioDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<arg declared_type='AEMixerBufferSource' index='1' name='source' type='^v'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setClientFormat:'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='clientFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setDebugLevel:'>
+<arg declared_type='int' index='0' name='debugLevel' type='i'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setPan:forSource:'>
+<arg declared_type='float' index='0' name='pan' type='f'/>
+<arg declared_type='AEMixerBufferSource' index='1' name='source' type='^v'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setRenderCallback:peekCallback:userInfo:forSource:'>
+<arg declared_type='AEMixerBufferSourceRenderCallback' function_pointer='true' index='0' name='renderCallback' type='^?'>
+<arg declared_type='AEMixerBufferSource' type='^v'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='void*' type='^v'/>
+<retval declared_type='void' type='v'/>
+</arg>
+<arg declared_type='AEMixerBufferSourcePeekCallback' function_pointer='true' index='1' name='peekCallback' type='^?'>
+<arg declared_type='AEMixerBufferSource' type='^v'/>
+<arg declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='void*' type='^v'/>
+<retval declared_type='UInt32' type='L' type64='I'/>
+</arg>
+<arg declared_type='void*' index='2' name='userInfo' type='^v'/>
+<arg declared_type='AEMixerBufferSource' index='3' name='source' type='^v'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setSourceIdleThreshold:'>
+<arg declared_type='NSTimeInterval' index='0' name='sourceIdleThreshold' type='d'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setVolume:forSource:'>
+<arg declared_type='float' index='0' name='volume' type='f'/>
+<arg declared_type='AEMixerBufferSource' index='1' name='source' type='^v'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='sourceIdleThreshold'>
+<retval declared_type='NSTimeInterval' type='d'/>
+</method>
+<method selector='unregisterSource:'>
+<arg declared_type='AEMixerBufferSource' index='0' name='source' type='^v'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='volumeForSource:'>
+<arg declared_type='AEMixerBufferSource' index='0' name='source' type='^v'/>
+<retval declared_type='float' type='f'/>
+</method>
+</class>
+<class name='AEPlaythroughChannel'>
+<method selector='audioDescription'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='channelIsMuted'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='initWithAudioController:'>
+<arg declared_type='AEAudioController*' index='0' name='audioController' type='@'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='pan'>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='setChannelIsMuted:'>
+<arg declared_type='BOOL' index='0' name='channelIsMuted' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setPan:'>
+<arg declared_type='float' index='0' name='pan' type='f'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setVolume:'>
+<arg declared_type='float' index='0' name='volume' type='f'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='volume'>
+<retval declared_type='float' type='f'/>
+</method>
+</class>
+<class name='AERecorder'>
+<method class_method='true' selector='AACEncodingAvailable'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='beginRecordingToFileAtPath:fileType:error:'>
+<arg declared_type='NSString*' index='0' name='path' type='@'/>
+<arg declared_type='AudioFileTypeID' index='1' name='fileType' type='L' type64='I'/>
+<arg declared_type='NSError**' index='2' name='error' type='^@'/>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='currentTime'>
+<retval declared_type='double' type='d'/>
+</method>
+<method selector='finishRecording'>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='initWithAudioController:'>
+<arg declared_type='AEAudioController*' index='0' name='audioController' type='@'/>
+<retval declared_type='id' type='@'/>
+</method>
+<method selector='path'>
+<retval declared_type='NSString*' type='@'/>
+</method>
+<method selector='prepareRecordingToFileAtPath:fileType:error:'>
+<arg declared_type='NSString*' index='0' name='path' type='@'/>
+<arg declared_type='AudioFileTypeID' index='1' name='fileType' type='L' type64='I'/>
+<arg declared_type='NSError**' index='2' name='error' type='^@'/>
+<retval declared_type='BOOL' type='B'/>
+</method>
+</class>
+<class name='NSObject'>
+<method selector='audioDescription'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='channelIsMuted'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='channelIsPlaying'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='clientFormat'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='connectedToSelf'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='filterCallback'>
+<retval declared_type='AEAudioControllerFilterCallback' function_pointer='true' type='^?'>
+<arg declared_type='id' type='@'/>
+<arg declared_type='AEAudioController*' type='@'/>
+<arg declared_type='AEAudioControllerFilterProducer' function_pointer='true' type='^?'>
+<arg declared_type='void*' type='^v'/>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32*' type='^I'/>
+<retval declared_type='OSStatus' type='l' type64='i'/>
+</arg>
+<arg declared_type='void*' type='^v'/>
+<arg const='true' declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<retval declared_type='OSStatus' type='l' type64='i'/>
+</retval>
+</method>
+<method selector='pan'>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='receiverCallback'>
+<retval declared_type='AEAudioControllerAudioCallback' function_pointer='true' type='^?'>
+<arg declared_type='id' type='@'/>
+<arg declared_type='AEAudioController*' type='@'/>
+<arg declared_type='void*' type='^v'/>
+<arg const='true' declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<retval declared_type='void' type='v'/>
+</retval>
+</method>
+<method selector='renderCallback'>
+<retval declared_type='AEAudioControllerRenderCallback' function_pointer='true' type='^?'>
+<arg declared_type='id' type='@'/>
+<arg declared_type='AEAudioController*' type='@'/>
+<arg const='true' declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<retval declared_type='OSStatus' type='l' type64='i'/>
+</retval>
+</method>
+<method selector='setAudioInputBlock:'>
+<arg declared_type='ABInputPortAudioInputBlock' function_pointer='true' index='0' name='audioInputBlock' type='@?'>
+<arg declared_type='ABInputPort*' type='@'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<arg declared_type='AudioTimeStamp' type='{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='ABPort*' type='@'/>
+<retval declared_type='void' type='v'/>
+</arg>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setClientFormat:'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='clientFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setConnectedPortAttributes:'>
+<arg declared_type='NSInteger' index='0' name='connectedPortAttributes' type='i' type64='q'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setMuteLiveAudioInputWhenConnectedToSelf:'>
+<arg declared_type='BOOL' index='0' name='self' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='timingReceiverCallback'>
+<retval declared_type='AEAudioControllerTimingCallback' function_pointer='true' type='^?'>
+<arg declared_type='id' type='@'/>
+<arg declared_type='AEAudioController*' type='@'/>
+<arg const='true' declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<arg declared_type='AEAudioTimingContext' type='i'/>
+<retval declared_type='void' type='v'/>
+</retval>
+</method>
+<method selector='volume'>
+<retval declared_type='float' type='f'/>
+</method>
+</class>
+<informal_protocol name=''>
+<method selector='clientFormat' type='{AudioStreamBasicDescription=dIIIIIIII}8@0:4' type64='{AudioStreamBasicDescription=dIIIIIIII}16@0:8'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='connectedToSelf' type='B8@0:4' type64='B16@0:8'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='setAudioInputBlock:' type='v12@0:4@?8' type64='v24@0:8@?16'>
+<arg declared_type='ABInputPortAudioInputBlock' function_pointer='true' index='0' name='audioInputBlock' type='@?'>
+<arg declared_type='ABInputPort*' type='@'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<arg declared_type='AudioTimeStamp' type='{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='ABPort*' type='@'/>
+<retval declared_type='void' type='v'/>
+</arg>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setClientFormat:' type='v48@0:4{AudioStreamBasicDescription=dIIIIIIII}8' type64='v56@0:8{AudioStreamBasicDescription=dIIIIIIII}16'>
+<arg declared_type='AudioStreamBasicDescription' index='0' name='clientFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setConnectedPortAttributes:' type='v12@0:4i8' type64='v24@0:8q16'>
+<arg declared_type='NSInteger' index='0' name='connectedPortAttributes' type='i' type64='q'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setMuteLiveAudioInputWhenConnectedToSelf:' type='v12@0:4B8' type64='v20@0:8B16'>
+<arg declared_type='BOOL' index='0' name='self' type='B'/>
+<retval declared_type='void' type='v'/>
+</method>
+</informal_protocol>
+<informal_protocol name='AEAudioFilter'>
+<method selector='filterCallback' type='^?8@0:4' type64='^?16@0:8'>
+<retval declared_type='AEAudioControllerFilterCallback' function_pointer='true' type='^?'>
+<arg declared_type='id' type='@'/>
+<arg declared_type='AEAudioController*' type='@'/>
+<arg declared_type='AEAudioControllerFilterProducer' function_pointer='true' type='^?'>
+<arg declared_type='void*' type='^v'/>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg declared_type='UInt32*' type='^I'/>
+<retval declared_type='OSStatus' type='l' type64='i'/>
+</arg>
+<arg declared_type='void*' type='^v'/>
+<arg const='true' declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<retval declared_type='OSStatus' type='l' type64='i'/>
+</retval>
+</method>
+</informal_protocol>
+<informal_protocol name='AEAudioPlayable'>
+<method selector='audioDescription' type='{AudioStreamBasicDescription=dIIIIIIII}8@0:4' type64='{AudioStreamBasicDescription=dIIIIIIII}16@0:8'>
+<retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
+</method>
+<method selector='channelIsMuted' type='B8@0:4' type64='B16@0:8'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='channelIsPlaying' type='B8@0:4' type64='B16@0:8'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='pan' type='f8@0:4' type64='f16@0:8'>
+<retval declared_type='float' type='f'/>
+</method>
+<method selector='renderCallback' type='^?8@0:4' type64='^?16@0:8'>
+<retval declared_type='AEAudioControllerRenderCallback' function_pointer='true' type='^?'>
+<arg declared_type='id' type='@'/>
+<arg declared_type='AEAudioController*' type='@'/>
+<arg const='true' declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<retval declared_type='OSStatus' type='l' type64='i'/>
+</retval>
+</method>
+<method selector='volume' type='f8@0:4' type64='f16@0:8'>
+<retval declared_type='float' type='f'/>
+</method>
+</informal_protocol>
+<informal_protocol name='AEAudioReceiver'>
+<method selector='receiverCallback' type='^?8@0:4' type64='^?16@0:8'>
+<retval declared_type='AEAudioControllerAudioCallback' function_pointer='true' type='^?'>
+<arg declared_type='id' type='@'/>
+<arg declared_type='AEAudioController*' type='@'/>
+<arg declared_type='void*' type='^v'/>
+<arg const='true' declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<retval declared_type='void' type='v'/>
+</retval>
+</method>
+</informal_protocol>
+<informal_protocol name='AEAudioTimingReceiver'>
+<method selector='timingReceiverCallback' type='^?8@0:4' type64='^?16@0:8'>
+<retval declared_type='AEAudioControllerTimingCallback' function_pointer='true' type='^?'>
+<arg declared_type='id' type='@'/>
+<arg declared_type='AEAudioController*' type='@'/>
+<arg const='true' declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
+<arg declared_type='UInt32' type='L' type64='I'/>
+<arg declared_type='AEAudioTimingContext' type='i'/>
+<retval declared_type='void' type='v'/>
+</retval>
+</method>
+</informal_protocol>
+</signatures>
