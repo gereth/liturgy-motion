@@ -12,6 +12,7 @@ end
 
 require 'rubygems'
 # require 'motion-cocoapods'
+# require 'bubble-wrap/all'
 
 Motion::Project::App.setup do |app|
   app.name = 'Liturgy'
@@ -22,7 +23,10 @@ Motion::Project::App.setup do |app|
   app.device_family = :iphone
   # app.files_dependencies 'app/app_delegate.rb' => 'app/lib/helper.rb'
   app.interface_orientations = [:portrait]
-  app.frameworks += %w( CoreAudio )
+  app.framework_search_paths += ['/System/Library/Frameworks']
+  
+  # app.frameworks += ['CoreAudio', 'AudioToolbox', 'Accelerate', 'QuartzCore']
+  app.frameworks = ['AudioToolbox', 'CoreAudio']
   app.deployment_target = "7.1"
   app.identifier = 'com.ereth.liturgy'
   app.release do
