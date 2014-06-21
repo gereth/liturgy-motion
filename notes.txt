@@ -1,0 +1,15 @@
+# https://groups.google.com/forum/#!topic/rubymotion/-IBIElWiQFI
+
+# - AudioToolbox
+# sound_id = Pointer.new('I')
+# AudioServicesCreateSystemSoundID("audio/loop.m4a".resource_url, sound_id)
+# AudioServicesPlaySystemSound(sound_id[0])
+# KPanningMode_SoundField
+
+# - not support for AudioUnit and iOS
+# - http://stackoverflow.com/questions/22960236/rubymotion-throwing-nameerror-when-trying-to-create-a-audiocomponentdescription
+# - http://stackoverflow.com/questions/14120878/ld-framework-not-found-audiounit
+
+# - Compression
+# http://club15cc.com/code/ios/mixing-audio-without-clipping-limiters-etc
+# https://developer.apple.com/library/ios/documentation/AudioUnit/Reference/AudioUnitParametersReference/Reference/reference.html#//apple_ref/doc/uid/TP40007290-CH1-SW1

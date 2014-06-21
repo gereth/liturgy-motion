@@ -19,31 +19,44 @@ class AppDelegate
     )
     audio_unit_player = AEAudioUnitChannel.alloc.initWithComponentDescription(
       audio_component, 
-      audioController: @audiocontroller, 
+      audioController: @audio_controller, 
       error: au_player_error
     )
     @audio = load_audio "audio/loop.m4a"
+    @audio.loop = true
     @audio_controller.addChannels [@audio]
-    @audio_controller.addChannels audio_unit_player
-    
-    # Filter
-    delay_component = AEAudioComponentDescriptionMake(
-      KAudioUnitManufacturer_Apple, 
-      KAudioUnitType_Effect,
-      KAudioUnitSubType_Delay
-    )
-    @ae_filter = AEAudioUnitFilter.alloc.initWithComponentDescription(delay_component, audioController:@audio_controller, error: au_filter_error)
-    
+    @audio_controller.addChannels [audio_unit_player]
+
+    # Limiter
     @limiter = AELimiterFilter.alloc.initWithAudioController(@audio_controller)
-    @limiter.level = 100.0
+    @limiter.level = 10.0
+    @limiter.hold = 100.0
+    @limiter.attack = 0.01
+    
+        
+    # Filter
+    #
+    # delay_component = AEAudioComponentDescriptionMake(
+    #   KAudioUnitManufacturer_Apple, 
+    #   KAudioUnitType_Effect,
+    #   KAudioUnitSubType_Delay
+    # )
+    # @ae_filter = AEAudioUnitFilter.alloc.initWithComponentDescription(delay_component, audioController:@audio_controller, error: au_filter_error)
+    
+
+  
+    auto_pan @audio, 0.01, 0.80, 0.310
     
     @window.rootViewController = UIViewController.new
     @window.makeKeyAndVisible
+    sleep 10
+    
     true
+    
   end
   
   protected
-  
+    
   def load_audio(path, opts={})
     audio = AEAudioFilePlayer.audioFilePlayerWithURL(path.resource_url, audioController: @audio_controller, error:nil)
     audio.channelIsMuted = false
@@ -57,32 +70,23 @@ class AppDelegate
     end
   end
   
-  def auto_pan(channel, origin, dest, speed=0.033)
-    (origin.to_f..dest).step(0.01).to_a.each do |pan|
-      puts "panning: #{pan}"
-      channel.pan = pan
+  #  0.20 = 20 seconds from start to finish, e.g., L to R
+  def auto_pan(channel, start, finish, delay=0.209)
+    serial_queue = Dispatch::Queue.new("serial_queue") 
+    (start..finish).step(0.01).to_a.each do |pan|
+      variable_pan = pan + 0.02
+      serial_queue.sync do
+        channel.pan  = variable_pan
+        sleep(delay)
+        puts "time: #{channel.currentTime} pan: #{variable_pan} delay: #{delay}"
+      end
     end
   end
   
+  def auto_fade(channel, start, finish, speed)
+  end
+
   def instance(name)
     App.delegate.instance_variable_get(:"@#{name}")
   end
-    
 end
-
-# https://groups.google.com/forum/#!topic/rubymotion/-IBIElWiQFI
-
-# - AudioToolbox
-# sound_id = Pointer.new('I')
-# AudioServicesCreateSystemSoundID("audio/loop.m4a".resource_url, sound_id)
-# AudioServicesPlaySystemSound(sound_id[0])
-# KPanningMode_SoundField
-
-# - not support for AudioUnit and iOS
-# - http://stackoverflow.com/questions/22960236/rubymotion-throwing-nameerror-when-trying-to-create-a-audiocomponentdescription
-# - http://stackoverflow.com/questions/14120878/ld-framework-not-found-audiounit
-
-# - Compression
-# http://club15cc.com/code/ios/mixing-audio-without-clipping-limiters-etc
-# https://developer.apple.com/library/ios/documentation/AudioUnit/Reference/AudioUnitParametersReference/Reference/reference.html#//apple_ref/doc/uid/TP40007290-CH1-SW1
-
