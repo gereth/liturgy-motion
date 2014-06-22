@@ -45,7 +45,7 @@ class AppDelegate
     # )
     # @ae_filter = AEAudioUnitFilter.alloc.initWithComponentDescription(delay_component, audioController:@audio_controller, error: au_filter_error)
 
-    auto_pan @audio, 0.00, 0.94, 0.110
+    auto_pan @audio, 0.00, 0.94, :left, 0.110
     @window.rootViewController = UIViewController.new
     @window.makeKeyAndVisible
     true
@@ -68,13 +68,14 @@ class AppDelegate
   end
   
   #  0.20 = 20 seconds from start to finish, e.g., C to R
-  def auto_pan(channel, start, finish, delay=0.209)
-    serial_queue = Dispatch::Queue.new("serial_queue") 
+  def auto_pan(channel, start, finish, direction, delay=0.209)
+    serial_queue = Dispatch::Queue.new("serial_queue")
     (start..finish).step(0.01).to_a.each do |pan|
       serial_queue.sync do
-        channel.pan = pan
+        variable_pan = (pan + 0.02) * (direction == :right ? 1 : -1)
+        channel.pan = variable_pan
         sleep(delay)
-        puts "time: #{channel.currentTime} pan: #{pan} delay: #{delay}"
+        puts "time: #{channel.currentTime} pan: #{variable_pan} delay: #{delay}"
       end
     end
   end
