@@ -6,12 +6,14 @@ class AppDelegate
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
 
     # Audio Controller
+    #
     @audio_controller= AEAudioController.alloc.initWithAudioDescription(
       AEAudioController.nonInterleaved16BitStereoAudioDescription
     )
     @audio_controller.start au_controller_error
     
     # Player & Channels
+    #
     audio_component = AEAudioComponentDescriptionMake(
       KAudioUnitManufacturer_Apple, 
       KAudioUnitType_Generator, 
@@ -28,12 +30,12 @@ class AppDelegate
     @audio_controller.addChannels [audio_unit_player]
 
     # Limiter
+    #
     @limiter = AELimiterFilter.alloc.initWithAudioController(@audio_controller)
-    @limiter.level = 10.0
-    @limiter.hold = 100.0
+    @limiter.level  = 10.0
+    @limiter.hold   = 100.0
     @limiter.attack = 0.01
-    
-        
+
     # Filter
     #
     # delay_component = AEAudioComponentDescriptionMake(
@@ -42,25 +44,20 @@ class AppDelegate
     #   KAudioUnitSubType_Delay
     # )
     # @ae_filter = AEAudioUnitFilter.alloc.initWithComponentDescription(delay_component, audioController:@audio_controller, error: au_filter_error)
-    
 
-  
-    auto_pan @audio, 0.01, 0.80, 0.310
-    
+    auto_pan @audio, 0.00, 0.94, 0.110
     @window.rootViewController = UIViewController.new
     @window.makeKeyAndVisible
-    sleep 10
-    
     true
-    
   end
   
   protected
-    
+
   def load_audio(path, opts={})
     audio = AEAudioFilePlayer.audioFilePlayerWithURL(path.resource_url, audioController: @audio_controller, error:nil)
     audio.channelIsMuted = false
-    audio.loop = opts[:loop] || false
+    audio.currentTime = 0.30
+    audio.loop = opts[:loop] || true
     audio
   end
   
@@ -70,21 +67,21 @@ class AppDelegate
     end
   end
   
-  #  0.20 = 20 seconds from start to finish, e.g., L to R
+  #  0.20 = 20 seconds from start to finish, e.g., C to R
   def auto_pan(channel, start, finish, delay=0.209)
     serial_queue = Dispatch::Queue.new("serial_queue") 
     (start..finish).step(0.01).to_a.each do |pan|
-      variable_pan = pan + 0.02
       serial_queue.sync do
-        channel.pan  = variable_pan
+        channel.pan = pan
         sleep(delay)
-        puts "time: #{channel.currentTime} pan: #{variable_pan} delay: #{delay}"
+        puts "time: #{channel.currentTime} pan: #{pan} delay: #{delay}"
       end
     end
   end
-  
+
   def auto_fade(channel, start, finish, speed)
   end
+  
 
   def instance(name)
     App.delegate.instance_variable_get(:"@#{name}")
