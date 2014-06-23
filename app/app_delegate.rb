@@ -2,20 +2,6 @@
 
 class AppDelegate
   
-  %w( volume pan).each do |kind|
-    define_method("automate_#{kind}".to_sym) do |start, finish, channel, direction, delay|
-      serial_queue = Dispatch::Queue.new("serial_queue_#{rand}")
-      range(start..finish).each do |float|
-        serial_queue.sync do
-          param = (float + 0.02) * (direction == :right ? 1 : -1)
-          channel.__send__(kind.to_sym, param)
-          sleep(delay)
-          puts "[+] #{kind} "
-        end
-      end
-    end
-  end
-
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
 
