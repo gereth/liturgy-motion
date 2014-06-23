@@ -1,6 +1,20 @@
 # http://hboon.com/rubymotion-tutorial-for-objective-c-developers/
 
 class AppDelegate
+  
+  %w( volume pan).each do |kind|
+    define_method("automate_#{kind}".to_sym) do |start, finish, channel, direction, delay|
+      serial_queue = Dispatch::Queue.new("serial_queue_#{rand}")
+      range(start..finish).each do |float|
+        serial_queue.sync do
+          param = (float + 0.02) * (direction == :right ? 1 : -1)
+          channel.__send__(kind.to_sym, param)
+          sleep(delay)
+          puts "[+] #{kind} "
+        end
+      end
+    end
+  end
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
@@ -45,16 +59,34 @@ class AppDelegate
     # )
     # @ae_filter = AEAudioUnitFilter.alloc.initWithComponentDescription(delay_component, audioController:@audio_controller, error: au_filter_error)
 
-    auto_pan @audio, 0.00, 0.94, :left, 0.110
+    
     @window.rootViewController = UIViewController.new
     @window.makeKeyAndVisible
     true
   end
-  
-  protected
 
+  # :automate_volume, :automate_pan
+  #
+  %w( volume pan).each do |kind|
+    define_method("automate_#{kind}".to_sym) do |start, finish, step, channel, direction, delay|
+      serial_queue = Dispatch::Queue.new("serial_queue_#{rand}")
+      range(start, finish, step).each do |float|
+        serial_queue.sync do
+          plus_minus = direction == :right || :up ? 1 : -1
+          param = (float + 0.02) * plus_minus
+          channel.__send__("#{kind}=", param)
+          sleep(delay)
+        end
+      end
+    end
+  end
+  
   def load_audio(path, opts={})
-    audio = AEAudioFilePlayer.audioFilePlayerWithURL(path.resource_url, audioController: @audio_controller, error:nil)
+    audio = AEAudioFilePlayer.audioFilePlayerWithURL(
+      path.resource_url, 
+      audioController: @audio_controller, 
+      error:nil
+    )
     audio.channelIsMuted = false
     audio.currentTime = 0.30
     audio.loop = opts[:loop] || true
@@ -67,22 +99,9 @@ class AppDelegate
     end
   end
   
-  #  0.20 = 20 seconds from start to finish, e.g., C to R
-  def auto_pan(channel, start, finish, direction, delay=0.209)
-    serial_queue = Dispatch::Queue.new("serial_queue")
-    (start..finish).step(0.01).to_a.each do |pan|
-      serial_queue.sync do
-        variable_pan = (pan + 0.02) * (direction == :right ? 1 : -1)
-        channel.pan = variable_pan
-        sleep(delay)
-        puts "time: #{channel.currentTime} pan: #{variable_pan} delay: #{delay}"
-      end
-    end
+  def range(s, f, step=0.01)
+    (s..f).step(step).to_a
   end
-
-  def auto_fade(channel, start, finish, speed)
-  end
-  
 
   def instance(name)
     App.delegate.instance_variable_get(:"@#{name}")
