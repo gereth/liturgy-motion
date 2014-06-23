@@ -92,4 +92,8 @@ class AppDelegate
   def instance(name)
     App.delegate.instance_variable_get(:"@#{name}")
   end
+  
+  def get_current(att, object)
+    puts att.send(object)
+  end
 end
