@@ -13,3 +13,5 @@
 # - Compression
 # http://club15cc.com/code/ios/mixing-audio-without-clipping-limiters-etc
 # https://developer.apple.com/library/ios/documentation/AudioUnit/Reference/AudioUnitParametersReference/Reference/reference.html#//apple_ref/doc/uid/TP40007290-CH1-SW1
+
+# http://hboon.com/rubymotion-tutorial-for-objective-c-developers/
