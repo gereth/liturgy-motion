@@ -29,7 +29,7 @@ class AppDelegate
     @audio2.currentTime = 10
     @audio.loop = true
     @audio2.pan = -0.90
-    @audio_controller.addChannels [@audio, @audio2]
+    @audio_controller.addChannels [@audio]
     @audio_controller.addChannels [audio_unit_player]
 
     # Limiter
@@ -56,7 +56,7 @@ class AppDelegate
     # monitor_audio
 
     automate_pan 0.00, 0.56, 0.01, @audio, :right, 0.50
-    automate_volume 1.00, 50.00, 1.00, @audio, :up, 0.50
+    automate_volume 0.01, 0.99, 0.01, @audio, :up, 0.80
     monitor_audio
     true
 
@@ -101,8 +101,10 @@ class AppDelegate
     EM.add_periodic_timer 3.0 do
       %w( audio audio2 ).each do |channel|
         a = instance(channel)
-        logger "[channel - #{channel}] time: #{a.currentTime.round(2)} volume: #{a.volume} pan: #{a.pan.round(2)}"
-        logger visualize_channel(a, :pan)        
+        logger "[channel - #{channel}] time: #{a.currentTime.round(2)} volume: #{a.volume.round(2)} pan: #{a.pan.round(2)}"
+        logger visualize_channel(a, :pan)     
+        logger visualize_channel(a, :volume)        
+           
       end
     end
   end
@@ -113,17 +115,21 @@ class AppDelegate
   end
   
   def visualize_channel(channel, att)
-    right = (0.00..0.99).step(0.01).to_a
-    left  = right.reverse.map{ |f| -f }
-    field = (left + right).map{|f| f.round(2)}
-    pan_spread = field.uniq.map do |f|
-      if channel.send(att).round(2) == f
-        "^"
+    field = if att == :pan
+      right = (0.00..0.99).step(0.01).to_a
+      left  = right.reverse.map{ |f| -f }
+      (left + right)
+    else
+      (0.01..1.00).step(0.01).to_a
+    end
+    
+    field.map{|f| f.round(2)}.uniq.map do |f|
+      if channel.send(att).round(2) == f.round(2)
+        "#{f}"
       else
         "."
       end
     end.join
-    puts pan_spread
   end
   
   def range(s, f, step=0.01)
