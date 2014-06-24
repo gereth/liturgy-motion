@@ -28,8 +28,7 @@ class AppDelegate
     @audio2 = load_audio "audio/loop.m4a"
     @audio2.currentTime = 10
     @audio.loop = true
-    @audio2.pan = -0.90
-    @audio_controller.addChannels [@audio]
+    @audio_controller.addChannels [@audio, @audio2]
     @audio_controller.addChannels [audio_unit_player]
 
     # Limiter
@@ -52,18 +51,17 @@ class AppDelegate
     @window.rootViewController = UIViewController.new
     @window.makeKeyAndVisible
     
-    
-    # monitor_audio
-
     automate_pan 0.00, 0.56, 0.01, @audio, :right, 0.50
     automate_volume 0.01, 0.99, 0.01, @audio, :up, 0.80
+    
+    automate_pan -0.99, -0.58, 0.01, @audio2, :left, 0.18
+    automate_volume 0.01, 0.68, 0.02, @audio2, :up, 0.80
+    
     monitor_audio
     true
 
   end
 
-  # :automate_volume, :automate_pan
-  #
   %w( volume pan).each do |kind|
     define_method("automate_#{kind}".to_sym) do |start, finish, step, channel, direction, delay|
       serial_queue = Dispatch::Queue.concurrent("serial_queue_#{rand}")
@@ -97,39 +95,43 @@ class AppDelegate
     end
   end
   
+  # "[channel - #{channel}] time: #{channel.currentTime.round(2)} volume: #{channel.volume.round(2)} pan: #{channel.pan.round(2)}"
   def monitor_audio
     EM.add_periodic_timer 3.0 do
       %w( audio audio2 ).each do |channel|
         a = instance(channel)
-        logger "[channel - #{channel}] time: #{a.currentTime.round(2)} volume: #{a.volume.round(2)} pan: #{a.pan.round(2)}"
-        logger visualize_channel(a, :pan)     
-        logger visualize_channel(a, :volume)        
-           
+        logger visualize_channel(a) 
       end
     end
   end
+  
+  def visualize_channel(channel)
+    [:pan, :volume].map do |att|
+      field = if att == :pan
+        right = (0.00..0.99).step(0.01).to_a
+        left  = right.reverse.map{ |f| -f }
+        (left + right)
+      else
+        (0.01..1.00).step(0.01).to_a
+      end
+      
+      field.map{|f| f.round(2)}.uniq.map do |f|
+        if channel.send(att).round(2) == f.round(2)
+          f
+        elsif f == 0.0
+          "|"
+        else
+          "."
+        end
+      end.join
+    end
+  end
+  
+  protected
   
   def logger(msg)
     puts msg
     puts "\n\n"
-  end
-  
-  def visualize_channel(channel, att)
-    field = if att == :pan
-      right = (0.00..0.99).step(0.01).to_a
-      left  = right.reverse.map{ |f| -f }
-      (left + right)
-    else
-      (0.01..1.00).step(0.01).to_a
-    end
-    
-    field.map{|f| f.round(2)}.uniq.map do |f|
-      if channel.send(att).round(2) == f.round(2)
-        "#{f}"
-      else
-        "."
-      end
-    end.join
   end
   
   def range(s, f, step=0.01)
@@ -140,7 +142,4 @@ class AppDelegate
     App.delegate.instance_variable_get(:"@#{name}")
   end
   
-  def get_current(att, object)
-    puts att.send(object)
-  end
 end
