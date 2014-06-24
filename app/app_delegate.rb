@@ -25,8 +25,11 @@ class AppDelegate
       error: au_player_error
     )
     @audio = load_audio "audio/loop.m4a"
+    @audio2 = load_audio "audio/loop.m4a"
+    @audio2.currentTime = 10
     @audio.loop = true
-    @audio_controller.addChannels [@audio]
+    @audio2.pan = -0.90
+    @audio_controller.addChannels [@audio, @audio2]
     @audio_controller.addChannels [audio_unit_player]
 
     # Limiter
@@ -48,18 +51,27 @@ class AppDelegate
     
     @window.rootViewController = UIViewController.new
     @window.makeKeyAndVisible
+    
+    
+    # monitor_audio
+
+    automate_pan 0.00, 0.56, 0.01, @audio, :right, 0.50
+    automate_volume 1.00, 50.00, 1.00, @audio, :up, 0.50
+    monitor_audio
     true
+
   end
 
   # :automate_volume, :automate_pan
   #
   %w( volume pan).each do |kind|
     define_method("automate_#{kind}".to_sym) do |start, finish, step, channel, direction, delay|
-      serial_queue = Dispatch::Queue.new("serial_queue_#{rand}")
-      range(start, finish, step).each do |float|
-        serial_queue.sync do
+      serial_queue = Dispatch::Queue.concurrent("serial_queue_#{rand}")
+      serial_queue.async do
+        puts "{queue} #{kind} Starting\n"
+        range(start, finish, step).each do |float|
           plus_minus = direction == :right || :up ? 1 : -1
-          param = (float + 0.02) * plus_minus
+          param = ((float + 0.02) * plus_minus).round(2)
           channel.__send__("#{kind}=", param)
           sleep(delay)
         end
@@ -83,6 +95,35 @@ class AppDelegate
     define_method("#{name}_error") do
       Pointer.new(:object)
     end
+  end
+  
+  def monitor_audio
+    EM.add_periodic_timer 3.0 do
+      %w( audio audio2 ).each do |channel|
+        a = instance(channel)
+        logger "[channel - #{channel}] time: #{a.currentTime.round(2)} volume: #{a.volume} pan: #{a.pan.round(2)}"
+        logger visualize_channel(a, :pan)        
+      end
+    end
+  end
+  
+  def logger(msg)
+    puts msg
+    puts "\n\n"
+  end
+  
+  def visualize_channel(channel, att)
+    right = (0.00..0.99).step(0.01).to_a
+    left  = right.reverse.map{ |f| -f }
+    field = (left + right).map{|f| f.round(2)}
+    pan_spread = field.uniq.map do |f|
+      if channel.send(att).round(2) == f
+        "^"
+      else
+        "."
+      end
+    end.join
+    puts pan_spread
   end
   
   def range(s, f, step=0.01)
