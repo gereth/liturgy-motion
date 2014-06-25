@@ -1,13 +1,13 @@
 
 class AppDelegate
-  include AudioHelper
   
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
     @window.rootViewController = UIViewController.new
     @window.makeKeyAndVisible
 
-    load_audio_channels_for :clinton_division
+    @arranger = Arranger.new(:clinton_division)
+    @arranger.start
     true
   end
 
