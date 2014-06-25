@@ -1,3 +1,4 @@
+
 module AudioHelper
 
   def audio_controller
@@ -20,11 +21,13 @@ module AudioHelper
   #
   def load_audio_channels_for(location)
     file_names = audio_channels_for(location)
-    file_names.each do |name|
-      audio = load_audio audio_file_path_for(name, location)
-      instance_variable_set(:"@#{name}", audio)
+    file_names.map do |name|
+      {
+        name: name,
+        channel: load_audio(audio_file_path_for(name, location))
+      }
     end
-    monitor_audio location
+    # monitor_audio location
   end
   
   # @return [String] path for audio fie
@@ -36,7 +39,7 @@ module AudioHelper
   def audio_channels_for(location)
     {
       clinton_division: %w( choir )
-    }[location]
+    }.fetch(location)
   end
 
   def start_audio_controller
@@ -49,10 +52,10 @@ module AudioHelper
   end
   
   # Automate audio channel's volume or pan. 
-  #   :automate_volumne, :automate_pan
+  #   :automate_volume, :automate_pan
 
   %w( volume pan).each do |kind|
-    define_method("automate_#{kind}".to_sym) do |start, finish, step, channel, direction, delay|
+    define_method("#{kind}".to_sym) do |start, finish, step, channel, direction, delay|
       serial_queue = Dispatch::Queue.concurrent("serial_queue_#{rand}")
       serial_queue.async do
         puts "{queue} #{kind} Starting\n"
@@ -83,9 +86,6 @@ module AudioHelper
     audio
   end
 
-  # [:au_controller_error, :au_player_error, :au_filter_error]
-  #
-  # @return Pointer [Object] 
   %w( au_controller au_player au_filter).each do |name|
     define_method("#{name}_error") do
       Pointer.new(:object)
@@ -97,7 +97,7 @@ module AudioHelper
     EM.add_periodic_timer 3.0 do
       audio_channels_for(location).each do |channel|
         a = instance(channel)
-        logger visualize_channel(a) 
+        visualize_channel(a) 
       end
     end
   end
@@ -129,7 +129,7 @@ module AudioHelper
   end
 
   def instance(name)
-    App.delegate.instance_variable_get(:"@#{name}")
+    instance_variable_get(:"@#{name}")
   end
 end
 
@@ -137,9 +137,6 @@ end
 # Loading Audio
 #-----------------------------------------------------------------------------
 
-# @audio  = load_audio "audio/loop.m4a"
-# @audio2 = load_audio "audio/loop.m4a"
-# @audio2.currentTime = 10
 # @audio_controller.addChannels [@audio, @audio2]
 # @audio_controller.addChannels [audio_unit_player]
 
