@@ -21,7 +21,7 @@ Motion::Project::App.setup do |app|
   # app.icons = %w( Icon@2x.png Icon.png) 
   app.prerendered_icon = false
   app.device_family = :iphone
-  app.files_dependencies 'app/app_delegate.rb' => 'app/lib/audio_helper.rb'
+  app.files_dependencies 'app/app_delegate.rb' => Dir.glob("app/lib/*")
   app.interface_orientations = [:portrait]
   # app.framework_search_paths += ['/System/Library/Frameworks']
   
