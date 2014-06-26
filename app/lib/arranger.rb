@@ -6,7 +6,7 @@ class Arranger
   def initialize(location)
     @location = location
     @channels = load_audio_channels_for(location)
-    @poller   = EM.add_periodic_timer(15.0) { poll_and_realize }
+    @poller   = EM.add_periodic_timer(60.0) { poll_and_realize }
   end
   
   def playing
@@ -26,7 +26,7 @@ class Arranger
       puts "skipping realization"
     else
       # add resp[:add]
-      # remove resp[:remove]
+      remove resp[:remove]
       # change resp[:change]
     end
   end
@@ -36,24 +36,19 @@ class Arranger
   end
   
   def remove(remove)
-    puts "<> Removing: #{remove.inspect}"
     remove.each do |name|
-      puts name
       channel = audio_channel_for(name)
-      # skip if playing?
-      volume(channel.volume, 0.00, 0.08, channel, 0.10, 1) do
-        puts "removed!"
-        audio_controller.removeChannels [channel]
+      opts = {direction: "down", start: channel.volume, stop: 0.00 }
+      volume(opts, channel, 0.89) do |audio|
+        audio_controller.removeChannels([audio])
       end
     end
   end
-  
     
   def add(add)
   end
   
   def change(change)
-    
   end
   
   def poll_and_realize

@@ -17,8 +17,7 @@ module AudioHelper
     )
   end
   
-  # Loads and monitors all audio channels for a :location
-  #
+  # Loads all the channels for a location.
   def load_audio_channels_for(location)
     file_names = audio_channels_for(location)
     file_names.map do |name|
@@ -27,15 +26,14 @@ module AudioHelper
         channel: load_audio(audio_file_path_for(name, location))
       }
     end
-    # monitor_audio location
   end
   
-  # @return [String] path for audio fie
+  # String file_path for audio
   def audio_file_path_for(file_name, location)
     File.join('audio', 'clinton_division', file_name) + '.m4a'
   end
   
-  # Audio file names for each location.  Uses m4a extension
+  # Audio file names for each location
   def audio_channels_for(location)
     {
       clinton_division: %w( choir )
@@ -55,24 +53,41 @@ module AudioHelper
     audio_controller.audioGraph if audio_controller.running
   end
   
-  # Automate audio channel's volume or pan. 
-  #   :automate_volume, :automate_pan
-
+  # Ride the channel's volume or pan. 
   [:volume, :pan].each do |kind|
-    define_method(kind) do |start, finish, step, channel, delay, direction, &block|
+    define_method(kind) do |opts, channel, delay, &block|
       serial_queue = Dispatch::Queue.concurrent("serial_queue_#{rand}")
       serial_queue.async do
-        range(start, finish, step).each do |float|
-          puts float
-          param = ((float + 0.02) * direction).round(2)
-          channel.__send__("#{kind}=", param)
+        range(opts).each do |val|
+          puts val
+          channel.__send__("#{kind}=", val)
           sleep(delay)
         end
-        yield channel if block_given?
+        block.call(channel)
       end
     end
   end
 
+  # Returns a range of floats for volume or pan parameters
+  def range(opts)
+    step     = opts[:step] || 0.08
+    variance = opts[:variance] || 0.02
+    start    = opts[:start] || 0.50
+    stop     = opts[:stop] || 1.0
+    
+    floats = if opts[:direction] == "down"
+      (stop..start)
+    else
+      (start..stop)
+    end.step(step).to_a
+    floats.reverse! if opts[:direction] == "down"
+    
+    power = opts[:direction] =~ /up|down|right/ ? 1 : -1
+    floats.map do |float|
+      ((float + variance) * power).round(2)
+    end
+  end
+    
   # Load audio file resource within resources/audio
   #
   # @return [Object]
@@ -127,28 +142,11 @@ module AudioHelper
     end
   end
 
-  # @return [Array] of range
-  def range(s, f, step=0.01)
-    (s..f).step(step).to_a
-  end
-
   def instance(name)
     instance_variable_get(:"@#{name}")
   end
 end
 
-#-----------------------------------------------------------------------------
-# Loading Audio
-#-----------------------------------------------------------------------------
-
-# @audio_controller.addChannels [@audio, @audio2]
-# @audio_controller.addChannels [audio_unit_player]
-
-# automate_pan 0.00, 0.56, 0.01, @audio, :right, 0.50
-# automate_volume 0.01, 0.99, 0.01, @audio, :up, 0.80
-# 
-# automate_pan -0.99, -0.58, 0.01, @audio2, :left, 0.18
-# automate_volume 0.01, 0.68, 0.02, @audio2, :up, 0.80
 
 #-----------------------------------------------------------------------------
 # Limiter & Filters
