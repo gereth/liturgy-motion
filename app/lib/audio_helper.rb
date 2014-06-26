@@ -51,20 +51,24 @@ module AudioHelper
     )
   end
   
+  def au_graph
+    audio_controller.audioGraph if audio_controller.running
+  end
+  
   # Automate audio channel's volume or pan. 
   #   :automate_volume, :automate_pan
 
-  %w( volume pan).each do |kind|
-    define_method("#{kind}".to_sym) do |start, finish, step, channel, direction, delay|
+  [:volume, :pan].each do |kind|
+    define_method(kind) do |start, finish, step, channel, delay, direction, &block|
       serial_queue = Dispatch::Queue.concurrent("serial_queue_#{rand}")
       serial_queue.async do
-        puts "{queue} #{kind} Starting\n"
         range(start, finish, step).each do |float|
-          plus_minus = direction == :right || :up ? 1 : -1
-          param = ((float + 0.02) * plus_minus).round(2)
+          puts float
+          param = ((float + 0.02) * direction).round(2)
           channel.__send__("#{kind}=", param)
           sleep(delay)
         end
+        yield channel if block_given?
       end
     end
   end
