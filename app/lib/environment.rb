@@ -2,24 +2,23 @@ class Environment
   class <<self
     
     def get(location, channels)
-      # activity_indicator do ..
       fake_response
     end
   
     def fake_response
+      
       {
         add: [
           {
             name: "choir", 
-            volume: {from: 0.44, to: 0.68, delay: 0.00}, 
-            pan: {from: 0.00, to: 0.11, delay: 0.00}
+            volume: { start: 0.00, stop: 0.88, delay: 0.02, step: 0.01, direction: "up" },
+            pan: { start: 0.04, stop: 0.88, delay: 0.32, step: 0.01, direction: "left" }
           }
         ],
         remove: ["choir"],
         change: [
           {
-            name: "drums",
-            pan: {from: 0.01, to: 0.23, delay: 0.012, direction: -1}
+            name: "drums"
           }
         ]
       }
