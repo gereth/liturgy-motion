@@ -30,14 +30,15 @@ module AudioHelper
   
   # String file_path for audio
   def audio_file_path_for(file_name, location)
-    File.join('audio', 'clinton_division', file_name) + '.m4a'
+    File.join('audio', location.to_s, file_name) + '.m4a'
   end
   
   # Audio file names for each location
   def audio_channels_for(location)
     {
-      clinton_division: %w( choir )
-    }.fetch(location)
+      clinton_division: %w( choir ),
+      forest_park: %( bird_synth )
+    }.try(:[], location)
   end
 
   def start_audio_controller
@@ -59,7 +60,7 @@ module AudioHelper
       serial_queue = Dispatch::Queue.concurrent("serial_queue_#{rand}")
       serial_queue.async do
         range(opts).each do |val|
-          puts "Changing #{kind} for channel: #{File.basename(channel.url.to_s)} [#{val}]"
+          puts "[+] #{kind} automation for channel: #{File.basename(channel.url.to_s)} value: #{val}"
           channel.__send__("#{kind}=", val)
           sleep(opts[:delay])
         end

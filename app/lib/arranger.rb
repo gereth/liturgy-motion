@@ -6,7 +6,7 @@ class Arranger
   def initialize(location)
     @location = location
     @channels = load_audio_channels_for(location)
-    # @poller   = EM.add_periodic_timer(60.0) { poll_and_realize }
+    @poller   = EM.add_periodic_timer(25.0) { poll_and_realize }
   end
   
   def playing
@@ -17,48 +17,67 @@ class Arranger
   
   def start
     start_audio_controller unless audio_controller.running
-    audio_controller.addChannels [audio_channel_for("choir") ]
     poll_and_realize
   end
     
   def realize(resp)
     if resp[:skip]
-      puts "skipping realization"
+      puts "[*] skipping realization"
     else
-      add resp[:add]
-      # remove resp[:remove] 
-      # change resp[:change] 
+      add resp       
+      remove resp 
+      change resp
     end
   end
   
   def audio_channel_for(name)
-    channels.find{|c| c[:name] == name }[:channel]
+    (channels.find{|c| c[:name] == name} || {})[:channel]
   end
   
-  def remove(remove)
-    remove.each do |name|
-      puts "<> Removing channel: #{obj[:name]}"
-      channel = audio_channel_for(name)
-      opts = {direction: "down", start: channel.volume, stop: 0.00 }
-      volume(opts, channel, 0.89) do |audio|
+  def channel_is_playing(channel)
+    channel.channelIsPlaying && channel.currentTime > 0.0
+  end
+  
+  def add(resp)
+    resp[:add].each do |obj|
+      next unless channel = audio_channel_for(obj[:name])
+      next if channel_is_playing(channel)
+      
+      puts "<> Adding channel: #{obj[:name]}"
+      channel.volume = obj[:volume][:start]
+      channel.pan = obj[:pan][:start]
+      audio_controller.addChannels([channel])
+      automate obj, channel
+    end
+  end
+
+  def remove(resp)
+    resp[:remove].each do |name|
+      next unless channel = audio_channel_for(name) 
+      next unless channel_is_playing(channel)
+      
+      puts "<> Removing channel: #{name}"
+      opts = {direction: "down", start: channel.volume, stop: 0.00, delay: 0.89}
+      volume(opts, channel) do |audio|
         audio_controller.removeChannels([audio])
+        puts "[!] removed"
       end
     end
   end
-    
-  def add(add)
-    add.each do |obj|
-      puts "<> Adding channel: #{obj[:name]}"
-      channel = audio_channel_for(obj[:name])
-      channel.volume = 0.0 # obj[:volume][:start]
-      channel.pan = obj[:pan][:start]
-      audio_controller.addChannels([channel])
-      volume obj[:volume], channel
-      pan obj[:pan], channel
+  
+  def change(resp)
+    resp[:change].each do |obj|
+      next unless channel = audio_channel_for(obj[:name]) 
+      next unless channel_is_playing(channel)
+      
+      puts "<> Changing channel: #{obj[:name]}"
+      automate obj, channel
     end
   end
   
-  def change(change)
+  def automate(obj, channel)
+    volume(obj[:volume], channel) if obj[:volume]
+    pan(obj[:pan], channel) if obj[:pan]
   end
   
   def poll_and_realize

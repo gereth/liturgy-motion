@@ -6,7 +6,6 @@ class Environment
     end
   
     def fake_response
-      
       {
         add: [
           {
@@ -18,11 +17,12 @@ class Environment
         remove: ["choir"],
         change: [
           {
-            name: "drums"
+            name: "drums",
+            pan: { start: 0.00, stop: 0.88, delay: 0.12, step: 0.11, direction: "right" },
           }
-        ]
+        ],
+        skip: [true, false].sample
       }
-      # { skip: true } -> skip
     end
   end
 end
