@@ -55,15 +55,15 @@ module AudioHelper
   
   # Ride the channel's volume or pan. 
   [:volume, :pan].each do |kind|
-    define_method(kind) do |opts, channel, delay, &block|
+    define_method(kind) do |opts, channel, &block|
       serial_queue = Dispatch::Queue.concurrent("serial_queue_#{rand}")
       serial_queue.async do
         range(opts).each do |val|
-          puts val
+          puts "Changing #{kind} for channel: #{File.basename(channel.url.to_s)} [#{val}]"
           channel.__send__("#{kind}=", val)
-          sleep(delay)
+          sleep(opts[:delay])
         end
-        block.call(channel)
+        block.call(channel) if block
       end
     end
   end
@@ -74,14 +74,13 @@ module AudioHelper
     variance = opts[:variance] || 0.02
     start    = opts[:start] || 0.50
     stop     = opts[:stop] || 1.0
-    
     floats = if opts[:direction] == "down"
       (stop..start)
     else
       (start..stop)
     end.step(step).to_a
-    floats.reverse! if opts[:direction] == "down"
     
+    floats.reverse! if opts[:direction] == "down"
     power = opts[:direction] =~ /up|down|right/ ? 1 : -1
     floats.map do |float|
       ((float + variance) * power).round(2)
@@ -99,7 +98,7 @@ module AudioHelper
     )
     audio.channelIsMuted = false
     audio.currentTime = opts[:start_time] || 0.00
-    audio.volume      = opts[:volume] || 1.0
+    audio.volume      = opts[:volume] || 0.00
     audio.pan         = opts[:pan] || 0.00
     audio.loop        = opts[:loop] || true
     audio
