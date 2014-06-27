@@ -10,10 +10,4 @@ class AppDelegate
     @arranger.start
     true
   end
-
-  protected
-
-  def logger(msg)
-    puts "#{msg}\n"
-  end
 end

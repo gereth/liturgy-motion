@@ -60,7 +60,6 @@ class Arranger
       opts = {direction: "down", start: channel.volume, stop: 0.00, delay: 0.89}
       volume(opts, channel) do |audio|
         audio_controller.removeChannels([audio])
-        puts "[!] removed"
       end
     end
   end

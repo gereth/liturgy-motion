@@ -1,3 +1,6 @@
+# todo: 
+# - Change fake_response with [].sample for testing
+
 class Environment
   class <<self
     
