@@ -48,7 +48,7 @@ class Arranger
       channel.pan = obj[:pan][:start]
       audio_controller.addChannels([channel])
       automate obj, channel
-    end
+    end if resp[:add]
   end
 
   def remove(resp)
@@ -61,7 +61,7 @@ class Arranger
       volume(opts, channel) do |audio|
         audio_controller.removeChannels([audio])
       end
-    end
+    end if resp[:remove]
   end
   
   def change(resp)
@@ -71,7 +71,7 @@ class Arranger
       
       puts "<> Changing channel: #{obj[:name]}"
       automate obj, channel
-    end
+    end if resp[:change]
   end
   
   def automate(obj, channel)

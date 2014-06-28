@@ -1,11 +1,9 @@
-# todo: 
-# - Change fake_response with [].sample for testing
 
 class Environment
   class <<self
     
     def get(location, channels)
-      fake_response
+      fake_response.slice([:add,:remove,:change,:skip].sample)
     end
   
     def fake_response
