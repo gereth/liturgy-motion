@@ -24,6 +24,7 @@ class Arranger
     if resp[:skip]
       puts "[*] skipping realization"
     else
+      puts "[+] Starting realization: #{resp.inspect}"
       add resp       
       remove resp 
       change resp

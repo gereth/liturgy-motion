@@ -1,13 +1,19 @@
+# TODO
+
+# root controller with scrolling nav
+# minimal player controls with actions to pause and play
+# directions to each exhibit
 
 class AppDelegate
   
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-    @window.rootViewController = UIViewController.new
-    @window.makeKeyAndVisible
 
-    @arranger = Arranger.new(:clinton_division)
-    @arranger.start
+
+    locations_controller = LocationsController.alloc.init
+    nav_controller       = UINavigationController.alloc.initWithRootViewController(locations_controller)
+    @window.rootViewController = nav_controller
+    @window.makeKeyAndVisible    
     true
   end
 end
