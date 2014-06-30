@@ -3,6 +3,7 @@
 # root controller with scrolling nav
 # minimal player controls with actions to pause and play
 # directions to each exhibit
+# rewrite with AVAudioEngine
 
 class AppDelegate
   

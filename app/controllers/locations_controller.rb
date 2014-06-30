@@ -2,11 +2,12 @@ class LocationsController < UIViewController
   
   def viewDidLoad
     super
-    add_locations
+    setup_locations
   end
 
-  def add_locations
+  def setup_locations
     # ...
+    
     @arranger = Arranger.new(:clinton_division)
     @arranger.start
   end
