@@ -5,14 +5,15 @@ class Environment
     def get(location, channels, &callback)
       channels = format_channels(channels)
       url = "http://liturgy.herokuapp.com?location=#{location}&channels=#{channels}&api_key=#{config["API_KEY"]}"
-      BW::HTTP.get("http://google.com") do |response|
-        if response.ok?
-          resp = fake_response.slice([:add,:remove,:change,:skip].sample)
-          callback.call({error: response})
+      BW::HTTP.get("http://google.co...m") do |resp|
+        realization = if resp.ok?
+          fake_response.slice([:add,:remove,:change,:skip].sample) #response.body
         else
+          App.alert("Error. Could not load Location.")
+          {error: resp}
         end
+        callback.call(realization)
       end
-      # fake_response.slice([:add,:remove,:change,:skip].sample)
     end
     
     def format_channels(channels)

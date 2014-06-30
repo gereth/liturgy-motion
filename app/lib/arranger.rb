@@ -91,6 +91,7 @@ class Arranger
   
   def cancel_poller
     EM.cancel_timer(poller)
+    # Navigate back to root screen
   end
 end
 
