@@ -22,7 +22,10 @@ class Arranger
     
   def realize(resp)
     if resp[:skip]
-      puts "[*] skipping realization"
+      puts "[*] Skipping realization"
+    elsif resp[:error]
+      puts "[*] Error. Cancelling poller."
+      cancel_poller
     else
       puts "[+] Starting realization: #{resp.inspect}"
       add resp       
@@ -81,8 +84,9 @@ class Arranger
   end
   
   def poll_and_realize
-    resp = Environment.get(location, playing)
-    realize(resp)
+    Environment.get(location, playing) do |resp|
+      realize(resp)
+    end
   end
   
   def cancel_poller
