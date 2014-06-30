@@ -2,8 +2,25 @@
 class Environment
   class <<self
     
-    def get(location, channels)
-      fake_response.slice([:add,:remove,:change,:skip].sample)
+    def get(location, channels, &callback)
+      channels = format_channels(channels)
+      url = "http://liturgy.herokuapp.com?location=#{location}&channels=#{channels}&api_key=#{config["API_KEY"]}"
+      BW::HTTP.get("http://google.com") do |response|
+        if response.ok?
+          resp = fake_response.slice([:add,:remove,:change,:skip].sample)
+          callback.call({error: response})
+        else
+        end
+      end
+      # fake_response.slice([:add,:remove,:change,:skip].sample)
+    end
+    
+    def format_channels(channels)
+      channels
+    end
+    
+    def config
+      @config ||= NSBundle.mainBundle.infoDictionary
     end
   
     def fake_response
@@ -26,4 +43,5 @@ class Environment
       }
     end
   end
+  
 end
