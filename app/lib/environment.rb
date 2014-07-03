@@ -2,14 +2,16 @@
 class Environment
   class <<self
     
-    def get(location, channels, &callback)
-      channels = format_channels(channels)
-      url = "http://liturgy.herokuapp.com?location=#{location}&channels=#{channels}&api_key=#{config["API_KEY"]}"
-      BW::HTTP.get("http://google.co...m") do |resp|
+    def get(location, playing, &callback)
+      channels = playing.map{|c| c[:name]}
+      params   = "location=#{location}&channels=#{channels}"
+      url      = [ config[:base_url], params].join("?")
+      BW::HTTP.get(url, credentials: {username: 'api', password: config[:api_key]}) do |resp|
         realization = if resp.ok?
-          fake_response.slice([:add,:remove,:change,:skip].sample) #response.body
+          App.alert(BW::JSON.parse(resp.body).keys.join(","))
+          # fake_response.slice([:add,:remove,:change,:skip].sample) 
         else
-          App.alert("Error. Could not load Location.")
+          App.alert("Error. Could not load Location. #{resp.inspect}")
           {error: resp}
         end
         callback.call(realization)
@@ -21,7 +23,10 @@ class Environment
     end
     
     def config
-      @config ||= NSBundle.mainBundle.infoDictionary
+      @config ||= {
+        api_key: NSBundle.mainBundle.infoDictionary["API_KEY"],
+        base_url: "http://localhost:9292/api/forecast.json",
+      }
     end
   
     def fake_response

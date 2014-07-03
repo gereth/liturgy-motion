@@ -21,17 +21,17 @@ class Arranger
   end
     
   def realize(resp)
-    if resp[:skip]
-      puts "[*] Skipping realization"
-    elsif resp[:error]
-      puts "[*] Error. Cancelling poller."
-      cancel_poller
-    else
-      puts "[+] Starting realization: #{resp.inspect}"
-      add resp       
-      remove resp 
-      change resp
-    end
+    # if resp[:skip]
+    #   puts "[*] Skipping realization"
+    # elsif resp[:error]
+    #   puts "[*] Error. Cancelling poller."
+    #   cancel_poller
+    # else
+    #   puts "[+] Starting realization: #{resp.inspect}"
+    #   add resp       
+    #   remove resp 
+    #   change resp
+    # end
   end
   
   def audio_channel_for(name)
