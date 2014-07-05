@@ -10,7 +10,6 @@ class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
 
-
     locations_controller = LocationsController.alloc.init
     nav_controller       = UINavigationController.alloc.initWithRootViewController(locations_controller)
     @window.rootViewController = nav_controller
