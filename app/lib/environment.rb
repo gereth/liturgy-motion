@@ -5,11 +5,11 @@ class Environment
     def get(location, playing, &callback)
       channels = playing.map{|c| c[:name]}
       params   = "location=#{location.to_s}&channels=#{channels}"
-      url      = [ config[:base_url], params].join("?")
+      url      = [ config[:api_url], params].join("?")
       BW::HTTP.get(url, credentials: {username: 'api', password: config[:api_key]}) do |resp|
         realization = if resp.ok?
           body = BW::JSON.parse(resp.body)
-          # App.alert body
+          App.alert body.to_s
           # fake_response.slice([:add,:remove,:change,:skip].sample) 
         else
           App.alert("Error. Could not load Location. #{resp.inspect}")
@@ -25,9 +25,13 @@ class Environment
     
     def config
       @config ||= {
-        api_key: NSBundle.mainBundle.infoDictionary["API_KEY"],
-        base_url: "http://localhost:9292/api/realization.json",
+        api_key: config_get("API_KEY"),
+        api_url: config_get("API_URL")
       }
+    end
+    
+    def config_get(key)
+      NSBundle.mainBundle.infoDictionary[key]
     end
   
     def fake_response
