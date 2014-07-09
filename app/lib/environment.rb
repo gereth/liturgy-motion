@@ -4,8 +4,7 @@ class Environment
     
     def get(location, playing, &callback)
       channels = playing.map{|c| c[:name]}
-      params   = "location=#{location.to_s}&channels=#{channels}"
-      url      = [ config[:api_url], params].join("?")
+      url      = [ config[:api_url], "location=#{location}"].join('?')
       BW::HTTP.get(url, credentials: {username: 'api', password: config[:api_key]}) do |resp|
         realization = if resp.ok?
           body = BW::JSON.parse(resp.body)
