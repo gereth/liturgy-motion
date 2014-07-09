@@ -1,4 +1,3 @@
-
 module AudioHelper
 
   def audio_controller
@@ -16,45 +15,56 @@ module AudioHelper
       KAudioUnitSubType_AudioFilePlayer
     )
   end
+
+  def channel_name(channel)
+    channel.url.pathComponents.last.split(".").first
+  end
   
-  # Loads all the channels for a location.
-  def load_audio_channels_for(location)
-    file_names = audio_channels_for(location)
-    file_names.map do |name|
-      {
-        name: name,
-        channel: load_audio(audio_file_path_for(name, location))
-      }
+  def loaded_channel_names
+    audio_controller.channels.each do |c|
+      channel_name(c)
     end
   end
   
-  # String file_path for audio
+  def loaded_audio_channel(name)
+    audio_controller.channels.select{ |c| name == channel_name(c)}
+  end
+  
+  #
+  # Return already loaded channel or load audio
+  #
+  def audio_channel(name, location)
+    if loaded_channel_names.include?(name)
+      loaded_audio_channel(name)
+    else
+      load_audio(audio_file_path_for(name, location))
+    end
+  end
+  
+  def channel_is_playing(channel)
+    channel.channelIsPlaying && channel.currentTime > 0.0
+  end
+
   def audio_file_path_for(file_name, location)
     File.join('audio', location.to_s, file_name) + '.m4a'
   end
   
-  # Audio file names for each location
-  def audio_channels_for(location)
-    {
-      clinton_division: %w( choir ),
-      forest_park: %( bird_synth )
-    }.try(:[], location)
-  end
-
+  #
+  # Starts AEController unless its running, then removes all channels
+  #
   def start_audio_controller
-    audio_controller.start au_controller_error
-    audio_unit_player = AEAudioUnitChannel.alloc.initWithComponentDescription(
-      audio_file_player_component, 
-      audioController: audio_controller, 
-      error: au_player_error
-    )
+    audio_controller.start(au_controller_error) unless audio_controller.running
+    loaded = audio_controller.channels
+    audio_controller.removeChannels([loaded])
   end
   
   def au_graph
     audio_controller.audioGraph if audio_controller.running
   end
   
-  # Ride the channel's volume or pan. 
+  #
+  # Controls the automation of the Channels Volume or Pan: [:volume, :pan ]
+  #
   [:volume, :pan].each do |kind|
     define_method(kind) do |opts, channel, &block|
       serial_queue = Dispatch::Queue.concurrent("serial_queue_#{rand}")
@@ -69,7 +79,9 @@ module AudioHelper
     end
   end
 
+  #
   # Returns a range of floats for volume or pan parameters
+  #
   def range(opts)
     step     = opts[:step] || 0.08
     variance = opts[:variance] || 0.02
@@ -87,21 +99,23 @@ module AudioHelper
       ((float + variance) * power).round(2)
     end
   end
-    
+
+  #
   # Load audio file resource within resources/audio
   #
-  # @return [Object]
   def load_audio(path, opts={})
     audio = AEAudioFilePlayer.audioFilePlayerWithURL(
       path.resource_url, 
       audioController: audio_controller, 
       error:nil
     )
-    audio.channelIsMuted = false
-    audio.currentTime = opts[:start_time] || 0.00
-    audio.volume      = opts[:volume] || 0.00
-    audio.pan         = opts[:pan] || 0.00
-    audio.loop        = opts[:loop] || true
+    unless audio.channelIsPlaying && audio.currentTime > 0.0
+      audio.channelIsMuted = false
+      audio.currentTime = opts[:start_time] || 0.00
+      audio.volume      = opts[:volume] || 0.00
+      audio.pan         = opts[:pan] || 0.00
+      audio.loop        = opts[:loop] || true
+    end
     audio
   end
 
@@ -112,39 +126,36 @@ module AudioHelper
   end
   
   # Monitors audio channel and logs pan and volume
-  def monitor_audio(location)
-    EM.add_periodic_timer 3.0 do
-      audio_channels_for(location).each do |channel|
-        a = instance(channel)
-        visualize_channel(a) 
-      end
-    end
-  end
+  # def monitor_audio(location)
+  #   EM.add_periodic_timer 3.0 do
+  #     audio_channels_for(location).each do |channel|
+  #       a = instance(channel)
+  #       visualize_channel(a) 
+  #     end
+  #   end
+  # end
 
-  def visualize_channel(channel)
-    [:pan, :volume].map do |att|
-      field = if att == :pan
-        right = range(0.00, 0.99)
-        left  = right.reverse.map{ |f| -f }
-        (left + right)
-      else
-        range(0.01,1.00)
-      end
-      field.map{|f| f.round(2)}.uniq.map do |f|
-        if channel.send(att).round(2) == f
-          f
-        elsif f == 0.0
-          "|"
-        else
-          "."
-        end
-      end.join
-    end
-  end
+  # def visualize_channel(channel)
+  #   [:pan, :volume].map do |att|
+  #     field = if att == :pan
+  #       right = range(0.00, 0.99)
+  #       left  = right.reverse.map{ |f| -f }
+  #       (left + right)
+  #     else
+  #       range(0.01,1.00)
+  #     end
+  #     field.map{|f| f.round(2)}.uniq.map do |f|
+  #       if channel.send(att).round(2) == f
+  #         f
+  #       elsif f == 0.0
+  #         "|"
+  #       else
+  #         "."
+  #       end
+  #     end.join
+  #   end
+  # end
 
-  def instance(name)
-    instance_variable_get(:"@#{name}")
-  end
 end
 
 
