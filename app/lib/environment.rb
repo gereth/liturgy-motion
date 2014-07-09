@@ -7,7 +7,9 @@ class Environment
       BW::HTTP.get(url, credentials: {username: 'api', password: config[:api_key]}) do |resp|
         realization = if resp.ok?
           body = BW::JSON.parse(resp.body)
-          App.alert body.to_s
+          App.alert(body.to_s)
+          {skip: true}
+          # App.alert body.to_s
           # fake_response.slice([:add,:remove,:change,:skip].sample) 
         else
           App.alert("Error. Could not load Location. #{resp.inspect}")

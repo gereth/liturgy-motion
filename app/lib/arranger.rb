@@ -21,13 +21,13 @@ class Arranger
     else
       puts "[+] Starting realization: #{resp.inspect}"
       [:add, :remove, :change].each do |op|
-        send(op, resp) if resp[op]
+        send(op, resp[op]) if resp[op]
       end
     end
   end
   
   def add(resp)
-    resp[:add].each do |obj|
+    resp.each do |obj|
       puts "<> Adding channel: #{obj[:name]}"
       channel = audio_channel(obj[:name], location)
       next if channel_is_playing(channel)
@@ -40,7 +40,7 @@ class Arranger
   end
 
   def remove(resp)
-    resp[:remove].each do |name|
+    resp.each do |name|
       puts "<> Removing channel: #{name}"
       channel = audio_channel(name, location)
       if channel_is_playing(channel)
@@ -53,7 +53,7 @@ class Arranger
   end
   
   def change(resp)
-    resp[:change].each do |obj|
+    resp.each do |obj|
       puts "<> Changing channel: #{obj[:name]}"
       channel = audio_channel(obj[:name], location)
       automate(obj, channel) if channel_is_playing(channel)
@@ -73,6 +73,7 @@ class Arranger
   
   def cancel_poller
     EM.cancel_timer(poller)
+    stop_audio_controller
   end
 end
 

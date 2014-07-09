@@ -53,10 +53,19 @@ module AudioHelper
   # Starts AEController unless its running, then removes all channels
   #
   def start_audio_controller
-    audio_controller.start(au_controller_error) unless audio_controller.running
-    loaded = audio_controller.channels
-    audio_controller.removeChannels([loaded])
+    stop_audio_controller
+    audio_controller.start(au_controller_error) 
   end
+  
+  def stop_audio_controller
+    if audio_controller.running
+      if audio_controller.channels.any?
+        audio_controller.removeChannels(audio_controller.channels) 
+      end
+      audio_controller.stop
+    end
+  end
+    
   
   def au_graph
     audio_controller.audioGraph if audio_controller.running
