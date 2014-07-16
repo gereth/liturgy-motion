@@ -6,12 +6,12 @@ class Arranger
     @location = location
     @poller   = EM.add_periodic_timer(25.0) { poll_and_realize }
   end
-  
+
   def start
     start_audio_controller
     poll_and_realize
   end
-    
+
   def realize(resp)
     if resp[:skip]
       puts "[*] Skipping realization"
@@ -25,7 +25,7 @@ class Arranger
       end
     end
   end
-  
+
   def add(resp)
     resp.each do |obj|
       puts "<> Adding channel: #{obj[:name]}"
@@ -36,7 +36,7 @@ class Arranger
       channel.pan    = obj[:pan][:start]
       audio_controller.addChannels([channel])
       automate obj, channel
-    end 
+    end
   end
 
   def remove(resp)
@@ -51,29 +51,31 @@ class Arranger
       end
     end
   end
-  
+
   def change(resp)
     resp.each do |obj|
       puts "<> Changing channel: #{obj[:name]}"
       channel = audio_channel(obj[:name], location)
       automate(obj, channel) if channel_is_playing(channel)
-    end 
+    end
   end
-  
+
   def automate(obj, channel)
     volume(obj[:volume], channel) if obj[:volume]
     pan(obj[:pan], channel) if obj[:pan]
   end
-  
+
   def poll_and_realize
-    Environment.get(location, loaded_channel_names) do |resp|
+    puts "---"
+    puts loaded_channel_names.inspect
+
+    Realization.get(location, loaded_channel_names) do |resp|
       realize(resp)
     end
   end
-  
+
   def cancel_poller
     EM.cancel_timer(poller)
     stop_audio_controller
   end
 end
-

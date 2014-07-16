@@ -7,11 +7,11 @@ module AudioHelper
       )
     end
   end
-  
+
   def audio_file_player_component
     AEAudioComponentDescriptionMake(
-      KAudioUnitManufacturer_Apple, 
-      KAudioUnitType_Generator, 
+      KAudioUnitManufacturer_Apple,
+      KAudioUnitType_Generator,
       KAudioUnitSubType_AudioFilePlayer
     )
   end
@@ -19,17 +19,17 @@ module AudioHelper
   def channel_name(channel)
     channel.url.pathComponents.last.split(".").first
   end
-  
+
   def loaded_channel_names
-    audio_controller.channels.each do |c|
+    audio_controller.channels.map do |c|
       channel_name(c)
     end
   end
-  
+
   def loaded_audio_channel(name)
     audio_controller.channels.select{ |c| name == channel_name(c)}
   end
-  
+
   #
   # Return already loaded channel or load audio
   #
@@ -40,7 +40,7 @@ module AudioHelper
       load_audio(audio_file_path_for(name, location))
     end
   end
-  
+
   def channel_is_playing(channel)
     channel.channelIsPlaying && channel.currentTime > 0.0
   end
@@ -48,29 +48,29 @@ module AudioHelper
   def audio_file_path_for(file_name, location)
     File.join('audio', location.to_s, file_name) + '.m4a'
   end
-  
+
   #
   # Starts AEController unless its running, then removes all channels
   #
   def start_audio_controller
     stop_audio_controller
-    audio_controller.start(au_controller_error) 
+    audio_controller.start(au_controller_error)
   end
-  
+
   def stop_audio_controller
     if audio_controller.running
       if audio_controller.channels.any?
-        audio_controller.removeChannels(audio_controller.channels) 
+        audio_controller.removeChannels(audio_controller.channels)
       end
       audio_controller.stop
     end
   end
-    
-  
+
+
   def au_graph
     audio_controller.audioGraph if audio_controller.running
   end
-  
+
   #
   # Controls the automation of the Channels Volume or Pan: [:volume, :pan ]
   #
@@ -101,7 +101,7 @@ module AudioHelper
     else
       (start..stop)
     end.step(step).to_a
-    
+
     floats.reverse! if opts[:direction] == "down"
     power = opts[:direction] =~ /up|down|right/ ? 1 : -1
     floats.map do |float|
@@ -114,8 +114,8 @@ module AudioHelper
   #
   def load_audio(path, opts={})
     audio = AEAudioFilePlayer.audioFilePlayerWithURL(
-      path.resource_url, 
-      audioController: audio_controller, 
+      path.resource_url,
+      audioController: audio_controller,
       error:nil
     )
     unless audio.channelIsPlaying && audio.currentTime > 0.0
@@ -133,13 +133,13 @@ module AudioHelper
       Pointer.new(:object)
     end
   end
-  
+
   # Monitors audio channel and logs pan and volume
   # def monitor_audio(location)
   #   EM.add_periodic_timer 3.0 do
   #     audio_channels_for(location).each do |channel|
   #       a = instance(channel)
-  #       visualize_channel(a) 
+  #       visualize_channel(a)
   #     end
   #   end
   # end
@@ -178,7 +178,7 @@ end
 # @limiter.attack = 0.01
 
 # delay_component = AEAudioComponentDescriptionMake(
-#   KAudioUnitManufacturer_Apple, 
+#   KAudioUnitManufacturer_Apple,
 #   KAudioUnitType_Effect,
 #   KAudioUnitSubType_Delay
 # )

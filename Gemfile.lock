@@ -4,6 +4,9 @@ GEM
     activesupport (3.2.18)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
+    afmotion (2.3.1)
+      motion-cocoapods (>= 1.4.1)
+      motion-require (>= 0.1)
     bubble-wrap (1.5.0)
     claide (0.6.1)
     cocoapods (0.33.1)
@@ -41,6 +44,7 @@ GEM
     json_pure (1.8.1)
     motion-cocoapods (1.5.0)
       cocoapods (>= 0.32.1)
+    motion-require (0.2.0)
     multi_json (1.10.1)
     nap (0.8.0)
     netrc (0.7.7)
@@ -54,6 +58,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  afmotion
   bubble-wrap (~> 1.5.0)
   cocoapods
   dotenv (~> 0.9.0)
