@@ -31,7 +31,7 @@ class Arranger
       puts "<> Adding channel: #{obj[:name]}"
       channel = audio_channel(obj[:name], location)
       next if channel_is_playing(channel)
-
+      
       channel.volume = obj[:volume][:start]
       channel.pan    = obj[:pan][:start]
       audio_controller.addChannels([channel])
@@ -61,14 +61,13 @@ class Arranger
   end
 
   def automate(obj, channel)
-    volume(obj[:volume], channel) if obj[:volume]
+    puts "<> Starting Automation"
+    volume(obj[:volume], channel)
     pan(obj[:pan], channel) if obj[:pan]
   end
 
   def poll_and_realize
-    puts "---"
-    puts loaded_channel_names.inspect
-
+    puts "Loaded channels: %s" % loaded_channel_names.inspect
     Realization.get(location, loaded_channel_names) do |resp|
       realize(resp)
     end

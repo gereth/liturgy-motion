@@ -6,8 +6,6 @@ class LocationsController < UIViewController
   end
 
   def setup_locations
-  # ...
-
     @arranger = Arranger.new(:clinton_division)
     @arranger.start
   end

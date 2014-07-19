@@ -4,7 +4,7 @@ class Realization
 
     def get(location, channels, &callback)
 
-      url = config[:api_url] + "?location=#{location}&channels=#{channels}"
+      url = "%s?location=#{location}&channels=#{channels}" % config[:api_url] 
       BW::HTTP.get(url, credentials: {username: 'api', password: config[:api_key]}) do |resp|
         realization = if resp.ok?
           BW::JSON.parse(resp.body)
@@ -12,7 +12,7 @@ class Realization
           # The poller is terminated and UI should go back to prev screen
           {error: resp}
         end
-        callback.call(realization)
+        callback.call realization
       end
     end
 

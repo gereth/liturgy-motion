@@ -6,7 +6,7 @@ class Hash
       public_send(*a, &b) if respond_to?(a.first)
     end
   end
-  
+
   def slice(*keys)
     select{|k| keys.member?(k)}
   end
