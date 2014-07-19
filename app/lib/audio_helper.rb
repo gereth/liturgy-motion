@@ -27,7 +27,7 @@ module AudioHelper
   end
 
   def loaded_audio_channel(name)
-    audio_controller.channels.select{ |c| name == channel_name(c)}
+    audio_controller.channels.find{ |c| name == channel_name(c)}
   end
 
   #
@@ -79,7 +79,7 @@ module AudioHelper
       serial_queue = Dispatch::Queue.concurrent("serial_queue_#{rand}")
       serial_queue.async do
         range(opts).each do |val|
-          puts "[+] #{kind} automation for channel: #{File.basename(channel.url.to_s)} value: #{val}"
+          puts "#{kind} -- #{channel_name(channel)}: #{val}"
           channel.__send__("#{kind}=", val)
           sleep(opts[:delay])
         end
