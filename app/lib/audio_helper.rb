@@ -76,15 +76,16 @@ module AudioHelper
   #
   [:volume, :pan].each do |kind|
     define_method(kind) do |opts, channel, &block|
-      serial_queue = Dispatch::Queue.concurrent("serial_queue_#{rand}")
+      serial_queue = Dispatch::Queue.concurrent("serial_queue")
       serial_queue.async do
         range(opts).each do |val|
           puts "#{kind} -- #{channel_name(channel)}: #{val}"
           channel.__send__("#{kind}=", val)
           sleep(opts[:delay])
         end
-        block.call(channel) if block
+        block.call if block
       end
+
     end
   end
 

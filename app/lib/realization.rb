@@ -4,7 +4,7 @@ class Realization
 
     def get(location, channels, &callback)
 
-      url = "%s?location=#{location}&channels=#{channels}" % config[:api_url] 
+      url = "%s?location=#{location}&channels=#{channels}" % config[:api_url]
       BW::HTTP.get(url, credentials: {username: 'api', password: config[:api_key]}) do |resp|
         realization = if resp.ok?
           BW::JSON.parse(resp.body)
@@ -14,10 +14,6 @@ class Realization
         end
         callback.call realization
       end
-    end
-
-    def format_channels(channels)
-      channels
     end
 
     def config
