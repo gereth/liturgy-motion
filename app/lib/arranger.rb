@@ -31,7 +31,7 @@ class Arranger
       puts "<> Adding channel: #{obj[:name]}"
       channel = audio_channel(obj[:name], location)
       next if channel_is_playing(channel)
-      
+
       channel.volume = obj[:volume][:start]
       channel.pan    = obj[:pan][:start]
       audio_controller.addChannels([channel])
@@ -45,8 +45,8 @@ class Arranger
       channel = audio_channel(name, location)
       if channel_is_playing(channel)
         opts = {direction: "down", start: channel.volume, stop: 0.00, delay: 0.89}
-        volume(opts, channel) do |audio|
-          audio_controller.removeChannels([audio])
+        volume(opts, channel) do
+          audio_controller.removeChannels([channel])
         end
       end
     end
