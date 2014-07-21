@@ -1,12 +1,20 @@
-class LocationsController < UIViewController
+class RootController < UIViewController
+
+  attr_accessor :location
+
+  def initialize(location)
+    puts "<> Initializing #{location}"
+    @location = location
+  end
 
   def viewDidLoad
     super
-    setup_locations
+    self.navigationController.navigationBar.hidden = false
+    arranger = Arranger.new(location)
+    arranger.start
   end
 
-  def setup_locations
-    @arranger = Arranger.new(:clinton_division)
-    @arranger.start
+  def viewWillDisappear(animated)
+    super
   end
 end

@@ -9,7 +9,6 @@ class Realization
         realization = if resp.ok?
           BW::JSON.parse(resp.body)
         else
-          # The poller is terminated and UI should go back to prev screen
           {error: resp}
         end
         callback.call realization
