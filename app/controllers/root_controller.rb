@@ -11,7 +11,6 @@ class RootController < UIViewController
 
   def setup_locations
     locations.each do |location|
-      puts location
       self.view << location_btn(location)
     end
   end
