@@ -18,13 +18,13 @@ Motion::Project::App.setup do |app|
   app.name = 'Liturgy'
   app.version = "1.0.00"
   # app.short_version = "1.3.0"
-  # app.icons = %w( Icon@2x.png Icon.png) 
+  # app.icons = %w( Icon@2x.png Icon.png)
   app.prerendered_icon = false
   app.device_family = :iphone
   app.files_dependencies 'app/app_delegate.rb' => Dir.glob("app/lib/*")
   app.interface_orientations = [:portrait]
   # app.framework_search_paths += ['/System/Library/Frameworks']
-  
+
   app.frameworks += ['CoreAudio', 'AudioToolbox', 'Accelerate', 'QuartzCore']
   app.frameworks += ['AudioToolbox', 'CoreAudio']
   app.deployment_target = "7.1"
@@ -35,10 +35,10 @@ Motion::Project::App.setup do |app|
   app.development do
     app.provisioning_profile = "/Users/deerly/Library/MobileDevice/Provisioning Profiles/E28F9A5E-CBA8-409F-A82C-6017F5418EB6.mobileprovision"
   end
-  
+
   app.pods do
     pod 'TheAmazingAudioEngine'
   end
-  
+
   Dotenv.load.each{ |k,v| app.info_plist[k] = v }
 end
