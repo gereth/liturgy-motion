@@ -1,4 +1,4 @@
-class RootController < UIViewController
+class LocationsController < UIViewController
 
   attr_accessor :location
 

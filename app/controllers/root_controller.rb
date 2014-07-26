@@ -6,18 +6,18 @@ class RootController < UIViewController
   end
 
   def locations
-    %w( clinton_division mount_tabor )
+    %w( clinton_division mt_tabor )
   end
 
   def setup_locations
-    locations.each do |location|
-      self.view << location_btn(location)
+    locations.each_with_index do |location, idx|
+      self.view << location_btn(location, idx)
     end
   end
 
   def location_btn(location, index)
     btn    = UIButton.buttonWithType(:custom.uibuttontype)
-    img    = location_img(location).uiimage
+    img    = location_img(location)
     y_axis = index == 0 ? 0 : img.size.height
 
     btn.setFrame(CGRectMake(0, y_axis, img.size.width, img.size.height))
@@ -29,7 +29,7 @@ class RootController < UIViewController
   end
 
   def location_img(location)
-    "buttons/locations/#{location}_#{screen_height}"
+    "buttons/locations/#{location}_#{screen_height}".uiimage
   end
 
   def screen_height
@@ -37,7 +37,7 @@ class RootController < UIViewController
   end
 
   def location_action(sender)
-    location =  location[sender.tag].to_sym
+    location =  locations[sender.tag].to_sym
     locations_controller = LocationsController.new(location)
     self.navigationController.pushViewController(locations_controller, animated: false)
   end
