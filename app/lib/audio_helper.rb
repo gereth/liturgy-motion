@@ -62,6 +62,7 @@ module AudioHelper
       if audio_controller.channels.any?
         audio_controller.removeChannels(audio_controller.channels)
       end
+      puts "<> Stopping AEController."
       audio_controller.stop
     end
   end
@@ -76,40 +77,36 @@ module AudioHelper
   #
   [:volume, :pan].each do |kind|
     define_method(kind) do |opts, channel, &block|
-      # serial_queue = Dispatch::Queue.concurrent("serial_queue")
-      # serial_queue.async do
-      #   range(opts).each do |val|
-      #     puts "#{kind} -- #{channel_name(channel)}: #{val}"
-      #     channel.__send__("#{kind}=", val)
-      #     sleep(opts[:delay])
-      #   end
-      #   block.call if block
-      # end
-      opts = {range: opts, channel: channel, kind: kind}
-      automation = NSInvocationOperation.alloc.initWithTarget(self, selector: :"automate:", object:  )
+      obj = {range: opts, channel: channel, kind: kind, block: block}
+      automation = NSInvocationOperation.alloc.initWithTarget(self, selector: :"invocation:", object:obj)
       ns_operation_queue.addOperation(automation)
-      
-    end
-  end
-  
-  def automate(opts)
-    range(opts[:range]).each do |val|
-      puts "#{opts[:kind]} -- #{channel_name(opts[:channel])}: #{val}"
-      channel.__send__("#{opts[:kind]}=", val)
-      sleep(opts[:delay])
+      block.call if block
     end
   end
 
+  # Selector for NSOperationInvocation that adds automation jobs to the queue
+  #
+  def invocation(opts)
+    puts "<> Adding invocation: %s" % opts.inspect
+    range(opts[:range]).each do |val|
+      puts "#{opts[:kind]} -- #{channel_name(opts[:channel])}: #{val}"
+      opts[:channel].__send__("#{opts[:kind]}=", val)
+      sleep(opts[:range][:delay])
+    end
+  end
+
+
+  # NSOperation Queue:  Handles automation workfor volume and pan operations
+  #
   def ns_operation_queue
     @ns_operation_queue ||= begin
       NSOperationQueue.new.tap do |queue|
-        queue.maxConcurrentOperationCount = 3 
+        queue.maxConcurrentOperationCount = 3
         queue.name = "automation"
       end
     end
   end
-    
-    
+
 
   #
   # Returns a range of floats for volume or pan parameters
@@ -151,58 +148,48 @@ module AudioHelper
     audio
   end
 
+  # Error pointers
+  #
   %w( au_controller au_player au_filter).each do |name|
     define_method("#{name}_error") do
       Pointer.new(:object)
     end
   end
 
-  # Monitors audio channel and logs pan and volume
-  # def monitor_audio(location)
-  #   EM.add_periodic_timer 3.0 do
-  #     audio_channels_for(location).each do |channel|
-  #       a = instance(channel)
-  #       visualize_channel(a)
-  #     end
-  #   end
-  # end
+  #
+  # Monitors all audio channels and logs pan and volume <debug>
+  #
+  def monitor_audio(location)
+    EM.add_periodic_timer 3.0 do
+      audio_channels_for(location).each do |channel|
+        a = instance(channel)
+        visualize_channel(a)
+      end
+    end
+  end
 
-  # def visualize_channel(channel)
-  #   [:pan, :volume].map do |att|
-  #     field = if att == :pan
-  #       right = range(0.00, 0.99)
-  #       left  = right.reverse.map{ |f| -f }
-  #       (left + right)
-  #     else
-  #       range(0.01,1.00)
-  #     end
-  #     field.map{|f| f.round(2)}.uniq.map do |f|
-  #       if channel.send(att).round(2) == f
-  #         f
-  #       elsif f == 0.0
-  #         "|"
-  #       else
-  #         "."
-  #       end
-  #     end.join
-  #   end
-  # end
+  #
+  # Visualize spatial arrangement of all channels <debug>
+  #
+  def visualize_channel(channel)
+    [:pan, :volume].map do |att|
+      field = if att == :pan
+        right = range(0.00, 0.99)
+        left  = right.reverse.map{ |f| -f }
+        (left + right)
+      else
+        range(0.01,1.00)
+      end
+      field.map{|f| f.round(2)}.uniq.map do |f|
+        if channel.send(att).round(2) == f
+          f
+        elsif f == 0.0
+          "|"
+        else
+          "."
+        end
+      end.join
+    end
+  end
 
 end
-
-
-#-----------------------------------------------------------------------------
-# Limiter & Filters
-#-----------------------------------------------------------------------------
-
-# @limiter = AELimiterFilter.alloc.initWithAudioController(@audio_controller)
-# @limiter.level  = 10.0
-# @limiter.hold   = 100.0
-# @limiter.attack = 0.01
-
-# delay_component = AEAudioComponentDescriptionMake(
-#   KAudioUnitManufacturer_Apple,
-#   KAudioUnitType_Effect,
-#   KAudioUnitSubType_Delay
-# )
-# @ae_filter = AEAudioUnitFilter.alloc.initWithComponentDescription(delay_component, audioController:@audio_controller, error: au_filter_error)
