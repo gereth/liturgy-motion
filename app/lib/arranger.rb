@@ -17,7 +17,7 @@ class Arranger
       puts "[*] Skipping realization"
     elsif resp[:error]
       puts "[*] Error. Cancelling poller."
-      cancel_poller
+      stop
     else
       puts "[+] Starting realization: #{resp.inspect}"
       [:add, :remove, :change].each do |op|
@@ -73,8 +73,9 @@ class Arranger
     end
   end
 
-  def cancel_poller
+  def stop
     EM.cancel_timer(poller)
     stop_audio_controller
+    ns_operation_queue.cancelAllOperations
   end
 end
