@@ -76,18 +76,40 @@ module AudioHelper
   #
   [:volume, :pan].each do |kind|
     define_method(kind) do |opts, channel, &block|
-      serial_queue = Dispatch::Queue.concurrent("serial_queue")
-      serial_queue.async do
-        range(opts).each do |val|
-          puts "#{kind} -- #{channel_name(channel)}: #{val}"
-          channel.__send__("#{kind}=", val)
-          sleep(opts[:delay])
-        end
-        block.call if block
-      end
-
+      # serial_queue = Dispatch::Queue.concurrent("serial_queue")
+      # serial_queue.async do
+      #   range(opts).each do |val|
+      #     puts "#{kind} -- #{channel_name(channel)}: #{val}"
+      #     channel.__send__("#{kind}=", val)
+      #     sleep(opts[:delay])
+      #   end
+      #   block.call if block
+      # end
+      opts = {range: opts, channel: channel, kind: kind}
+      automation = NSInvocationOperation.alloc.initWithTarget(self, selector: :"automate:", object:  )
+      ns_operation_queue.addOperation(automation)
+      
     end
   end
+  
+  def automate(opts)
+    range(opts[:range]).each do |val|
+      puts "#{opts[:kind]} -- #{channel_name(opts[:channel])}: #{val}"
+      channel.__send__("#{opts[:kind]}=", val)
+      sleep(opts[:delay])
+    end
+  end
+
+  def ns_operation_queue
+    @ns_operation_queue ||= begin
+      NSOperationQueue.new.tap do |queue|
+        queue.maxConcurrentOperationCount = 3 
+        queue.name = "automation"
+      end
+    end
+  end
+    
+    
 
   #
   # Returns a range of floats for volume or pan parameters
