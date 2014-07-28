@@ -15,6 +15,9 @@
 <opaque name='AEChannelGroupRef' type='^{_channel_group_t=}'/>
 <constant declared_type='NSString*' name='ABConnectionsChangedNotification' type='@'/>
 <constant const='true' declared_type='NSString*' name='AEAudioControllerDidRecreateGraphNotification' type='@'/>
+<constant const='true' declared_type='NSString*' name='AEAudioControllerErrorDomain' type='@'/>
+<constant const='true' declared_type='NSString*' name='AEAudioControllerErrorKey' type='@'/>
+<constant const='true' declared_type='NSString*' name='AEAudioControllerErrorOccurredNotification' type='@'/>
 <constant const='true' declared_type='NSString*' name='AEAudioControllerSessionInterruptionBeganNotification' type='@'/>
 <constant const='true' declared_type='NSString*' name='AEAudioControllerSessionInterruptionEndedNotification' type='@'/>
 <constant const='true' declared_type='NSString*' name='AEAudioFileWriterErrorDomain' type='@'/>
@@ -52,8 +55,7 @@
 <constant declared_type='NSString*' name='kAERecorderErrorKey' type='@'/>
 <constant const='true' declared_type='NSTimeInterval' name='kAFUploadStream3GSuggestedDelay' type='d'/>
 <constant const='true' declared_type='NSUInteger' name='kAFUploadStream3GSuggestedPacketSize' type='I' type64='Q'/>
-<enum name='ABInputPortAttributeNone' value='0'/>
-<enum name='ABInputPortAttributePlaysLiveAudio' value='1'/>
+<enum name='AEAudioControllerErrorInputAccessDenied' value='0'/>
 <enum name='AEAudioTimingContextInput' value='0'/>
 <enum name='AEAudioTimingContextOutput' value='1'/>
 <enum name='AEExpanderFilterPresetMedium' value='1'/>
@@ -87,7 +89,7 @@
 <enum name='COCOAPODS_VERSION_MINOR_AFNetworking_Security' value='3'/>
 <enum name='COCOAPODS_VERSION_MINOR_AFNetworking_Serialization' value='3'/>
 <enum name='COCOAPODS_VERSION_MINOR_AFNetworking_UIKit' value='3'/>
-<enum name='COCOAPODS_VERSION_MINOR_TheAmazingAudioEngine' value='3'/>
+<enum name='COCOAPODS_VERSION_MINOR_TheAmazingAudioEngine' value='4'/>
 <enum name='COCOAPODS_VERSION_PATCH_AFNetworking' value='1'/>
 <enum name='COCOAPODS_VERSION_PATCH_AFNetworking_NSURLConnection' value='1'/>
 <enum name='COCOAPODS_VERSION_PATCH_AFNetworking_NSURLSession' value='1'/>
@@ -95,52 +97,38 @@
 <enum name='COCOAPODS_VERSION_PATCH_AFNetworking_Security' value='1'/>
 <enum name='COCOAPODS_VERSION_PATCH_AFNetworking_Serialization' value='1'/>
 <enum name='COCOAPODS_VERSION_PATCH_AFNetworking_UIKit' value='1'/>
-<enum name='COCOAPODS_VERSION_PATCH_TheAmazingAudioEngine' value='0'/>
+<enum name='COCOAPODS_VERSION_PATCH_TheAmazingAudioEngine' value='2'/>
 <enum name='kAEAudioFileWriterFormatError' value='0'/>
 <enum name='kTPCircularBufferCopyAll' value='4294967295'/>
-<function name='ABInputPortIsConnected'>
-<arg declared_type='ABInputPort*' name='inputPort' type='@'/>
+<function name='ABReceiverPortIsConnected'>
+<arg declared_type='ABReceiverPort*' name='receiverPort' type='@'/>
 <retval declared_type='BOOL' type='B'/>
 </function>
-<function name='ABInputPortPeek'>
-<arg declared_type='ABInputPort*' name='inputPort' type='@'/>
-<arg declared_type='AudioTimeStamp*' name='outNextTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
-<retval declared_type='UInt32' type='L' type64='I'/>
-</function>
-<function name='ABInputPortReceive'>
-<arg declared_type='ABInputPort*' name='inputPort' type='@'/>
+<function name='ABReceiverPortReceive'>
+<arg declared_type='ABReceiverPort*' name='receiverPort' type='@'/>
 <arg declared_type='ABPort*' name='sourcePortOrNil' type='@'/>
-<arg declared_type='AudioBufferList*' name='bufferList' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
-<arg declared_type='UInt32*' name='ioLengthInFrames' type='^I'/>
-<arg declared_type='AudioTimeStamp*' name='outTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
-<arg declared_type='void**' name='ioMetadataBlockList' type='^^v'/>
-<retval declared_type='void' type='v'/>
-</function>
-<function name='ABInputPortReceiveLive'>
-<arg declared_type='ABInputPort*' name='inputPort' type='@'/>
 <arg declared_type='AudioBufferList*' name='bufferList' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
 <arg declared_type='UInt32' name='lengthInFrames' type='L' type64='I'/>
 <arg declared_type='AudioTimeStamp*' name='outTimestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
 <retval declared_type='void' type='v'/>
 </function>
-<function name='ABOutputPortGetAverageLatency'>
-<arg declared_type='ABOutputPort*' name='outputPort' type='@'/>
+<function name='ABSenderPortGetAverageLatency'>
+<arg declared_type='ABSenderPort*' name='senderPort' type='@'/>
 <retval declared_type='NSTimeInterval' type='d'/>
 </function>
-<function name='ABOutputPortGetConnectedPortAttributes'>
-<arg declared_type='ABOutputPort*' name='outputPort' type='@'/>
-<retval declared_type='ABInputPortAttributes' type='I' type64='Q'/>
-</function>
-<function name='ABOutputPortIsConnected'>
-<arg declared_type='ABOutputPort*' name='outputPort' type='@'/>
+<function name='ABSenderPortIsConnected'>
+<arg declared_type='ABSenderPort*' name='senderPort' type='@'/>
 <retval declared_type='BOOL' type='B'/>
 </function>
-<function name='ABOutputPortSendAudio'>
-<arg declared_type='ABOutputPort*' name='outputPort' type='@'/>
+<function name='ABSenderPortIsMuted'>
+<arg declared_type='ABSenderPort*' name='senderPort' type='@'/>
+<retval declared_type='BOOL' type='B'/>
+</function>
+<function name='ABSenderPortSend'>
+<arg declared_type='ABSenderPort*' name='senderPort' type='@'/>
 <arg const='true' declared_type='AudioBufferList*' name='audio' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
 <arg declared_type='UInt32' name='lengthInFrames' type='L' type64='I'/>
 <arg const='true' declared_type='AudioTimeStamp*' name='timestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
-<arg declared_type='void**' name='metadata' type='^^v'/>
 <retval declared_type='BOOL' type='B'/>
 </function>
 <function name='AEAllocateAndInitAudioBufferList'>
@@ -427,7 +415,7 @@
 </function>
 <function name='TPCircularBufferPrepareEmptyAudioBufferListWithAudioFormat'>
 <arg declared_type='TPCircularBuffer*' name='buffer' type='^{_TPCircularBuffer=^viiii}'/>
-<arg declared_type='AudioStreamBasicDescription*' name='audioFormat' type='^{AudioStreamBasicDescription=dIIIIIIII}'/>
+<arg const='true' declared_type='AudioStreamBasicDescription*' name='audioFormat' type='^{AudioStreamBasicDescription=dIIIIIIII}'/>
 <arg declared_type='UInt32' name='frameCount' type='L' type64='I'/>
 <arg const='true' declared_type='AudioTimeStamp*' name='timestamp' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
 <retval declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
@@ -530,11 +518,8 @@
 <method selector='audioInputAvailable'>
 <retval declared_type='BOOL' type='B'/>
 </method>
-<method selector='audioRoute'>
-<retval declared_type='NSString*' type='@'/>
-</method>
 <method selector='audioSessionCategory'>
-<retval declared_type='UInt32' type='L' type64='I'/>
+<retval declared_type='NSString*' type='@'/>
 </method>
 <method selector='audioUnit'>
 <retval declared_type='AudioUnit' type='^{OpaqueAudioComponentInstance=}'/>
@@ -542,17 +527,20 @@
 <method class_method='true' selector='audioUnitCanonicalAudioDescription'>
 <retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
 </method>
-<method selector='audiobusInputPort'>
-<retval declared_type='ABInputPort*' type='@'/>
+<method selector='audiobusReceiverPort'>
+<retval declared_type='ABReceiverPort*' type='@'/>
 </method>
-<method selector='audiobusOutputPort'>
-<retval declared_type='ABOutputPort*' type='@'/>
+<method selector='audiobusSenderPort'>
+<retval declared_type='ABSenderPort*' type='@'/>
 </method>
 <method selector='averagePowerLevel:peakHoldLevel:forGroup:'>
 <arg declared_type='Float32*' index='0' name='averagePower' type='^f'/>
 <arg declared_type='Float32*' index='1' name='peakLevel' type='^f'/>
 <arg declared_type='AEChannelGroupRef' index='2' name='group' type='^{_channel_group_t=}'/>
 <retval declared_type='void' type='v'/>
+</method>
+<method selector='avoidMeasurementModeForBuiltInMic'>
+<retval declared_type='BOOL' type='B'/>
 </method>
 <method selector='channelGroupIsMuted:'>
 <arg declared_type='AEChannelGroupRef' index='0' name='group' type='^{_channel_group_t=}'/>
@@ -577,7 +565,7 @@
 <retval declared_type='AEChannelGroupRef' type='^{_channel_group_t=}'/>
 </method>
 <method selector='currentBufferDuration'>
-<retval declared_type='float' type='f'/>
+<retval declared_type='NSTimeInterval' type='d'/>
 </method>
 <method selector='enableBluetoothInput'>
 <retval declared_type='BOOL' type='B'/>
@@ -653,7 +641,7 @@
 <retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
 </method>
 <method selector='numberOfInputChannels'>
-<retval declared_type='NSUInteger' type='I' type64='Q'/>
+<retval declared_type='int' type='i'/>
 </method>
 <method selector='outputAveragePowerLevel:peakHoldLevel:'>
 <arg declared_type='Float32*' index='0' name='averagePower' type='^f'/>
@@ -697,7 +685,10 @@
 <retval declared_type='BOOL' type='B'/>
 </method>
 <method selector='preferredBufferDuration'>
-<retval declared_type='float' type='f'/>
+<retval declared_type='NSTimeInterval' type='d'/>
+</method>
+<method selector='recordingThroughDeviceMicrophone'>
+<retval declared_type='BOOL' type='B'/>
 </method>
 <method selector='removeChannelGroup:'>
 <arg declared_type='AEChannelGroupRef' index='0' name='group' type='^{_channel_group_t=}'/>
@@ -760,25 +751,29 @@
 <retval declared_type='void' type='v'/>
 </method>
 <method selector='setAudioSessionCategory:'>
-<arg declared_type='UInt32' index='0' name='audioSessionCategory' type='L' type64='I'/>
+<arg declared_type='NSString*' index='0' name='audioSessionCategory' type='@'/>
 <retval declared_type='void' type='v'/>
 </method>
-<method selector='setAudiobusInputPort:'>
-<arg declared_type='ABInputPort*' index='0' name='audiobusInputPort' type='@'/>
+<method selector='setAudiobusReceiverPort:'>
+<arg declared_type='ABReceiverPort*' index='0' name='audiobusReceiverPort' type='@'/>
 <retval declared_type='void' type='v'/>
 </method>
-<method selector='setAudiobusOutputPort:'>
-<arg declared_type='ABOutputPort*' index='0' name='audiobusOutputPort' type='@'/>
+<method selector='setAudiobusSenderPort:'>
+<arg declared_type='ABSenderPort*' index='0' name='audiobusSenderPort' type='@'/>
 <retval declared_type='void' type='v'/>
 </method>
-<method selector='setAudiobusOutputPort:forChannel:'>
-<arg declared_type='ABOutputPort*' index='0' name='outputPort' type='@'/>
+<method selector='setAudiobusSenderPort:forChannel:'>
+<arg declared_type='ABSenderPort*' index='0' name='senderPort' type='@'/>
 <arg declared_type='id' index='1' name='channel' type='@'/>
 <retval declared_type='void' type='v'/>
 </method>
-<method selector='setAudiobusOutputPort:forChannelGroup:'>
-<arg declared_type='ABOutputPort*' index='0' name='outputPort' type='@'/>
+<method selector='setAudiobusSenderPort:forChannelGroup:'>
+<arg declared_type='ABSenderPort*' index='0' name='senderPort' type='@'/>
 <arg declared_type='AEChannelGroupRef' index='1' name='channelGroup' type='^{_channel_group_t=}'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setAvoidMeasurementModeForBuiltInMic:'>
+<arg declared_type='BOOL' index='0' name='avoidMeasurementModeForBuiltInMic' type='B'/>
 <retval declared_type='void' type='v'/>
 </method>
 <method selector='setEnableBluetoothInput:'>
@@ -816,7 +811,11 @@
 <retval declared_type='void' type='v'/>
 </method>
 <method selector='setPreferredBufferDuration:'>
-<arg declared_type='float' index='0' name='preferredBufferDuration' type='f'/>
+<arg declared_type='NSTimeInterval' index='0' name='preferredBufferDuration' type='d'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setUseMeasurementMode:'>
+<arg declared_type='BOOL' index='0' name='useMeasurementMode' type='B'/>
 <retval declared_type='void' type='v'/>
 </method>
 <method selector='setVoiceProcessingEnabled:'>
@@ -844,6 +843,9 @@
 </method>
 <method selector='topLevelChannelGroups'>
 <retval declared_type='NSArray*' type='@'/>
+</method>
+<method selector='useMeasurementMode'>
+<retval declared_type='BOOL' type='B'/>
 </method>
 <method class_method='true' selector='voiceProcessingAvailable'>
 <retval declared_type='BOOL' type='B'/>
@@ -894,6 +896,10 @@
 <arg declared_type='UInt32' type='L' type64='I'/>
 <retval declared_type='void' type='v'/>
 </arg>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='setError:'>
+<arg declared_type='NSError*' index='0' name='error' type='@'/>
 <retval declared_type='void' type='v'/>
 </method>
 </class>
@@ -966,6 +972,10 @@
 </arg>
 <retval declared_type='void' type='v'/>
 </method>
+<method selector='setUrl:'>
+<arg declared_type='NSURL*' index='0' name='url' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
 <method selector='setVolume:'>
 <arg declared_type='float' index='0' name='volume' type='f'/>
 <retval declared_type='void' type='v'/>
@@ -1001,6 +1011,10 @@
 </method>
 <method selector='path'>
 <retval declared_type='NSString*' type='@'/>
+</method>
+<method selector='setPath:'>
+<arg declared_type='NSString*' index='0' name='path' type='@'/>
+<retval declared_type='void' type='v'/>
 </method>
 </class>
 <class name='AEAudioUnitChannel'>
@@ -1062,6 +1076,9 @@
 <method selector='audioUnit'>
 <retval declared_type='AudioUnit' type='^{OpaqueAudioComponentInstance=}'/>
 </method>
+<method selector='bypassed'>
+<retval declared_type='_Bool' type='B'/>
+</method>
 <method selector='initWithComponentDescription:audioController:error:'>
 <arg declared_type='AudioComponentDescription' index='0' name='audioComponentDescription' type='{AudioComponentDescription=IIIII}'/>
 <arg declared_type='AEAudioController*' index='1' name='audioController' type='@'/>
@@ -1085,6 +1102,10 @@
 </arg>
 <arg declared_type='NSError**' index='4' name='error' type='^@'/>
 <retval declared_type='id' type='@'/>
+</method>
+<method selector='setBypassed:'>
+<arg declared_type='_Bool' index='0' name='bypassed' type='B'/>
+<retval declared_type='void' type='v'/>
 </method>
 </class>
 <class name='AEBlockAudioReceiver'>
@@ -1295,12 +1316,19 @@
 </method>
 </class>
 <class name='AEFloatConverter'>
+<method selector='floatFormatChannelsPerFrame'>
+<retval declared_type='int' type='i'/>
+</method>
 <method selector='floatingPointAudioDescription'>
 <retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
 </method>
 <method selector='initWithSourceFormat:'>
 <arg declared_type='AudioStreamBasicDescription' index='0' name='sourceFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
 <retval declared_type='id' type='@'/>
+</method>
+<method selector='setFloatFormatChannelsPerFrame:'>
+<arg declared_type='int' index='0' name='floatFormatChannelsPerFrame' type='i'/>
+<retval declared_type='void' type='v'/>
 </method>
 <method selector='setSourceFormat:'>
 <arg declared_type='AudioStreamBasicDescription' index='0' name='sourceFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
@@ -1321,7 +1349,7 @@
 <retval declared_type='UInt32' type='L' type64='I'/>
 </method>
 <method selector='initWithNumberOfChannels:sampleRate:'>
-<arg declared_type='NSInteger' index='0' name='numberOfChannels' type='i' type64='q'/>
+<arg declared_type='int' index='0' name='numberOfChannels' type='i'/>
 <arg declared_type='Float32' index='1' name='sampleRate' type='f'/>
 <retval declared_type='id' type='@'/>
 </method>
@@ -1431,6 +1459,7 @@
 <arg declared_type='AEMixerBufferSource' type='^v'/>
 <arg declared_type='UInt32' type='L' type64='I'/>
 <arg declared_type='AudioBufferList*' type='^{AudioBufferList=I[1{AudioBuffer=II^v}]}'/>
+<arg const='true' declared_type='AudioTimeStamp*' type='^{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
 <arg declared_type='void*' type='^v'/>
 <retval declared_type='void' type='v'/>
 </arg>
@@ -1523,6 +1552,10 @@
 <arg declared_type='AudioFileTypeID' index='1' name='fileType' type='L' type64='I'/>
 <arg declared_type='NSError**' index='2' name='error' type='^@'/>
 <retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='setPath:'>
+<arg declared_type='NSString*' index='0' name='path' type='@'/>
+<retval declared_type='void' type='v'/>
 </method>
 </class>
 <class name='AFCompoundResponseSerializer'>
@@ -2771,6 +2804,9 @@
 <method selector='audioDescription'>
 <retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
 </method>
+<method selector='audioUnit'>
+<retval declared_type='AudioUnit' type='^{OpaqueAudioComponentInstance=}'/>
+</method>
 <method selector='cacheImage:forRequest:'>
 <arg declared_type='UIImage*' index='0' name='image' type='@'/>
 <arg declared_type='NSURLRequest*' index='1' name='request' type='@'/>
@@ -2845,26 +2881,12 @@
 <arg declared_type='NSError**' index='2' name='error' type='^@'/>
 <retval declared_type='id' type='@'/>
 </method>
-<method selector='setAudioInputBlock:'>
-<arg declared_type='ABInputPortAudioInputBlock' function_pointer='true' index='0' name='audioInputBlock' type='@?'>
-<arg declared_type='ABInputPort*' type='@'/>
-<arg declared_type='UInt32' type='L' type64='I'/>
-<arg declared_type='AudioTimeStamp' type='{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
-<arg declared_type='ABPort*' type='@'/>
-<retval declared_type='void' type='v'/>
-</arg>
+<method selector='setAutomaticMonitoring:'>
+<arg declared_type='BOOL' index='0' name='automaticMonitoring' type='B'/>
 <retval declared_type='void' type='v'/>
 </method>
 <method selector='setClientFormat:'>
 <arg declared_type='AudioStreamBasicDescription' index='0' name='clientFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setConnectedPortAttributes:'>
-<arg declared_type='NSInteger' index='0' name='connectedPortAttributes' type='i' type64='q'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setMuteLiveAudioInputWhenConnectedToSelf:'>
-<arg declared_type='BOOL' index='0' name='self' type='B'/>
 <retval declared_type='void' type='v'/>
 </method>
 <method selector='throttleBandwidthWithPacketSize:delay:'>
@@ -3116,32 +3138,21 @@
 </method>
 </class>
 <informal_protocol name=''>
+<method selector='audioUnit' type='^{OpaqueAudioComponentInstance=}8@0:4' type64='^{OpaqueAudioComponentInstance=}16@0:8'>
+<retval declared_type='AudioUnit' type='^{OpaqueAudioComponentInstance=}'/>
+</method>
 <method selector='clientFormat' type='{AudioStreamBasicDescription=dIIIIIIII}8@0:4' type64='{AudioStreamBasicDescription=dIIIIIIII}16@0:8'>
 <retval declared_type='AudioStreamBasicDescription' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
 </method>
 <method selector='connectedToSelf' type='B8@0:4' type64='B16@0:8'>
 <retval declared_type='BOOL' type='B'/>
 </method>
-<method selector='setAudioInputBlock:' type='v12@0:4@?8' type64='v24@0:8@?16'>
-<arg declared_type='ABInputPortAudioInputBlock' function_pointer='true' index='0' name='audioInputBlock' type='@?'>
-<arg declared_type='ABInputPort*' type='@'/>
-<arg declared_type='UInt32' type='L' type64='I'/>
-<arg declared_type='AudioTimeStamp' type='{AudioTimeStamp=dQdQ{SMPTETime=ssIIIssss}II}'/>
-<arg declared_type='ABPort*' type='@'/>
-<retval declared_type='void' type='v'/>
-</arg>
+<method selector='setAutomaticMonitoring:' type='v12@0:4B8' type64='v20@0:8B16'>
+<arg declared_type='BOOL' index='0' name='automaticMonitoring' type='B'/>
 <retval declared_type='void' type='v'/>
 </method>
 <method selector='setClientFormat:' type='v48@0:4{AudioStreamBasicDescription=dIIIIIIII}8' type64='v56@0:8{AudioStreamBasicDescription=dIIIIIIII}16'>
 <arg declared_type='AudioStreamBasicDescription' index='0' name='clientFormat' type='{AudioStreamBasicDescription=dIIIIIIII}'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setConnectedPortAttributes:' type='v12@0:4i8' type64='v24@0:8q16'>
-<arg declared_type='NSInteger' index='0' name='connectedPortAttributes' type='i' type64='q'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setMuteLiveAudioInputWhenConnectedToSelf:' type='v12@0:4B8' type64='v20@0:8B16'>
-<arg declared_type='BOOL' index='0' name='self' type='B'/>
 <retval declared_type='void' type='v'/>
 </method>
 </informal_protocol>

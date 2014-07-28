@@ -37,7 +37,7 @@ Motion::Project::App.setup do |app|
   end
 
   app.pods do
-    pod 'TheAmazingAudioEngine'
+    pod 'TheAmazingAudioEngine' # 1.4.2 (last version was 1.3)
   end
 
   Dotenv.load.each{ |k,v| app.info_plist[k] = v }
