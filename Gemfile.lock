@@ -36,12 +36,16 @@ GEM
       nap (>= 0.6)
       netrc
     cocoapods-try (0.3.0)
+    codependency (2.0.0)
     colored (1.2)
     dotenv (0.9.0)
     escape (0.0.4)
     fuzzy_match (2.0.4)
     i18n (0.6.9)
     json_pure (1.8.1)
+    map-kit-wrapper (0.0.5)
+      codependency (= 2.0.0)
+      rake
     motion-cocoapods (1.5.0)
       cocoapods (>= 0.32.1)
     motion-require (0.2.0)
@@ -63,6 +67,7 @@ DEPENDENCIES
   bubble-wrap (~> 1.5.0)
   cocoapods
   dotenv (~> 0.9.0)
+  map-kit-wrapper
   motion-cocoapods
   rake
   sugarcube
