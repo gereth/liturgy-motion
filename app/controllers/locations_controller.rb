@@ -1,5 +1,4 @@
 class LocationsController < UIViewController
-
   attr_accessor :location, :arranger
 
   def initialize(location)
@@ -11,7 +10,11 @@ class LocationsController < UIViewController
   def viewDidLoad
     super
     self.navigationController.navigationBar.hidden = false
-    arranger.start
+    arranger.start if within_distance_of(location)
+  end
+
+  def within_distance_of(location)
+    
   end
 
   def viewWillDisappear(animated)
