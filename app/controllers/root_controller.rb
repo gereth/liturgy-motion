@@ -1,5 +1,4 @@
 class RootController < UIViewController
-
   attr_accessor :scroll_view
 
   def viewDidLoad
@@ -20,7 +19,7 @@ class RootController < UIViewController
   end
 
   def locations
-    %w( mt_tabor clinton_division )
+    Config.get(:locations).keys
   end
 
   def setup_locations
