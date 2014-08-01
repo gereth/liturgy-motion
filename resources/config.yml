@@ -1,0 +1,11 @@
+locations:
+  mt_tabor:
+    name: "Mt Tabor"
+    coordinates:
+      - 45.511692
+      - -122.594505
+  clinton_division:
+    name: "Clinton / Division"
+    coordinates:
+      - 45.504780
+      - -122.632129
