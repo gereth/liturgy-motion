@@ -52,7 +52,6 @@ class RootController < UIViewController
     btn.tag = index
     btn.addTarget(self, action:"location_action:", forControlEvents: :touch.uicontrolevent)
     btn.setImage(images.first, forState:UIControlStateNormal)
-    btn.setImage(images.last, forState:UIControlStateSelected)
     btn.imageView.animationImages = images
     btn.imageView.animationDuration = 0.9
     btn.alpha = 0
