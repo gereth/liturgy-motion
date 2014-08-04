@@ -1,8 +1,5 @@
 
 class AppDelegate
-  include Config
-  include MapKit
-  
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     application.setStatusBarStyle(UIStatusBarStyleLightContent)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
