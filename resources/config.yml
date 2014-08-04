@@ -4,8 +4,12 @@ locations:
     coordinates:
       - 45.511692
       - -122.594505
+    address: "111 Street, Portland Oregon"
   clinton_division:
     name: "Clinton / Division"
     coordinates:
       - 45.504780
       - -122.632129
+    address: "222 Stret, Portland Oregon"
+en:
+  permission: "Hey, we need your location."
