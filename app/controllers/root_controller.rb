@@ -65,8 +65,10 @@ class RootController < UIViewController
 
   def location_action(sender)
     location =  locations[sender.tag].to_sym
-    locations_controller = LocationsController.new(location)
-    self.navigationController.pushViewController(locations_controller, animated: false)
+    #  locations_controller = LocationsController.new(location)
+    map_controller = MapController.new(location)
+    self.navigationController.pushViewController(map_controller, animated: false)
+
   end
 
   def viewWillDisappear(animated)

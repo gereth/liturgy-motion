@@ -27,6 +27,7 @@ class MapController < UIViewController
     map_view.mapType = MKMapTypeHybrid
     self.view = map_view
     map_view.addAnnotation location
+    map_view.delegate = self
   end
 
   def viewWillAppear(animated)
@@ -39,23 +40,28 @@ class MapController < UIViewController
     super
   end
 
-  ViewIdentifier = 'ViewIdentifier'
   def mapView(mapView, viewForAnnotation:location)
-    if view = mapView.dequeueReusableAnnotationViewWithIdentifier(ViewIdentifier)
-      view.annotation = location
-    else
-      view = MKPinAnnotationView.alloc.initWithAnnotation(location, reuseIdentifier:ViewIdentifier)
-      view.canShowCallout = true
-      view.animatesDrop   = true
-      button = UIButton.buttonWithType(UIButtonTypeDetailDisclosure)
-      button.addTarget(self, action: :'showDetails:', forControlEvents:UIControlEventTouchUpInside)
-      view.rightCalloutAccessoryView = button
-    end
+    view = MKPinAnnotationView.alloc.initWithAnnotation(location, reuseIdentifier:nil)
+    view.canShowCallout = true
+    view.animatesDrop   = true
+    button = UIButton.buttonWithType(UIButtonTypeDetailDisclosure)
+    button.addTarget(self, action: :'showDetails:', forControlEvents:UIControlEventTouchDown)
+    view.rightCalloutAccessoryView = button
     view
   end
+
+  def showDetails
+    # .openMapsWithItems([location])
+  end
+
+
+  def mapView(mapView, annotationView:view, calloutAccessoryControlTapped:control)
+  end
+
 end
 
-
 # - Directions
+# http://www.devfright.com/mkdirections-tutorial/
 # http://nshipster.com/mktileoverlay-mkmapsnapshotter-mkdirections/
 # http://www.techotopia.com/index.php/Using_MKDirections_to_get_iOS_7_Map_Directions_and_Routes
+# https://developer.apple.com/library/mac/documentation/UserExperience/Conceptual/LocationAwarenessPG/ProvidingDirections/ProvidingDirections.html#//apple_ref/doc/uid/TP40009497-CH8-SW5
