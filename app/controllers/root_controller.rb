@@ -1,4 +1,5 @@
 class RootController < UIViewController
+  include Config
   attr_accessor :scroll_view
 
   def viewDidLoad
@@ -18,10 +19,6 @@ class RootController < UIViewController
     scroll_view.delegate = self
   end
 
-  def locations
-    Config.get(:locations).keys
-  end
-
   def setup_locations
     locations.each_with_index do |location, idx|
       scroll_view << location_gif_btn(location, idx)
@@ -30,7 +27,7 @@ class RootController < UIViewController
 
   def location_animation(location)
     images = gif_images(location).compact
-    view =  UIImageView.alloc.initWithFrame(CGRectMake(0, 0, 320, 284))
+    view   = UIImageView.alloc.initWithFrame(CGRectMake(0, 0, 320, 284))
     view.animationImages = images
     view.animationDuration = 60.0
     view.startAnimating

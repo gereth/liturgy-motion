@@ -14,7 +14,6 @@ class LocationsController < UIViewController
   end
 
   def within_distance_of(location)
-    
   end
 
   def viewWillDisappear(animated)
