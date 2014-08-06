@@ -15,5 +15,7 @@ class AppDelegate
     nav_controller  = UINavigationController.alloc.initWithRootViewController(root_controller)
     @window.rootViewController = nav_controller
     @window.makeKeyAndVisible
+    true
   end
+
 end
