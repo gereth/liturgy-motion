@@ -25,7 +25,7 @@ Motion::Project::App.setup do |app|
   app.interface_orientations = [:portrait]
   # app.framework_search_paths += ['/System/Library/Frameworks']
 
-  app.frameworks += ['CoreAudio', 'AudioToolbox', 'Accelerate', 'QuartzCore', 'CoreLocation']
+  app.frameworks += ['CoreAudio', 'AudioToolbox', 'Accelerate', 'QuartzCore', 'CoreLocation', 'AddressBook']
   app.frameworks += ['AudioToolbox', 'CoreAudio']
   app.deployment_target = "7.1"
   app.identifier = 'com.ereth.liturgy'
