@@ -1,15 +1,24 @@
 locations:
   mt_tabor:
-    name: "Mt Tabor"
+    name: "Mt Tabor: Tall As Trees."
     coordinates:
       - 45.511692
       - -122.594505
-    address: "111 Street, Portland Oregon"
+    address:
+      Street: "Mt Tabor City Park"
+      City: "Portland"
+      State: "Oregon"
+      ZIP: "97215"
+
   clinton_division:
-    name: "Clinton / Division"
+    name: "Clinton Division: Busied Below"
     coordinates:
       - 45.504780
       - -122.632129
-    address: "222 Stret, Portland Oregon"
+    address:
+      Street: "3226 SE Division Street"
+      City: "Portland"
+      State: "Oregon"
+      ZIP: "97202"
 en:
   permission: "Hey, we need your location."
