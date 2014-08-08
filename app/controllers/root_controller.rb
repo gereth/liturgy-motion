@@ -64,7 +64,8 @@ class RootController < UIViewController
   end
 
   def location_action(sender)
-    location =  locations[sender.tag].to_sym
+    key =  locations[sender.tag].to_sym
+    location = LocationItem.new(key)
     locations_controller = LocationsController.new(location)
     self.navigationController.pushViewController(locations_controller, animated: false)
 

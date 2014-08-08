@@ -2,27 +2,21 @@ class LocationsController < UIViewController
   attr_accessor :location, :arranger
 
   def initialize(location)
-    puts "<> Initializing #{location}"
+    puts "<> Initializing - #{location.name}"
     @location = location
     @arranger = Arranger.new(location)
-    @current_coordinates ||= UIApplication.sharedApplication.delegate.current_coordinates
   end
 
   def viewDidLoad
     super
     self.navigationController.navigationBar.hidden = false
-    arranger.start if within_distance_of(location)
-  end
-
-  # http://stackoverflow.com/questions/14028033/need-assistance-regarding-mkmapitem
-  def within_distance_of(location)
+    arranger.start
   end
 
   def get_directions
-    location_item = LocationItem.new(location)
-    placemark = MKPlacemark.alloc.initWithCoordinate(location_item.coordinate, addressDictionary:location_item.address )
+    placemark = MKPlacemark.alloc.initWithCoordinate(location.coordinate, addressDictionary:location.address )
     map_item  = MKMapItem.alloc.initWithPlacemark(placemark)
-    map_item.name = location_item.name
+    map_item.name = location.name
     opts = {}
     map_item.openInMapsWithLaunchOptions(opts)
   end
