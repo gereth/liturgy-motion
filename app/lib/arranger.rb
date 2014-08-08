@@ -67,10 +67,19 @@ class Arranger
   end
 
   def poll_and_realize
-    puts "Loaded channels: %s" % loaded_channel_names.inspect
-    Realization.get(location, loaded_channel_names) do |resp|
+    puts "<> Loaded channels: %s" % loaded_channel_names.inspect
+    Realization.get(location.key, current_distance, loaded_channel_names) do |resp|
       realize(resp)
     end
+  end
+
+  # - in meters
+  def current_distance
+    current_coordinates.distance_to(location.coordinate)
+  end
+
+  def current_coordinates
+    UIApplication.sharedApplication.delegate.current_coordinates
   end
 
   def stop
