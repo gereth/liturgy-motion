@@ -1,9 +1,10 @@
 class LocationItem
-  attr_accessor :config, :lat, :long
+  attr_accessor :config, :lat, :long, :key
 
-  def initialize(location)
-    @config = Config.get(:locations, location)
+  def initialize(key)
+    @config = Config.get(:locations, key)
     @lat, @long = config["coordinates"]
+    @key = key
   end
 
   def coordinate

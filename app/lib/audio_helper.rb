@@ -37,7 +37,7 @@ module AudioHelper
     if loaded_channel_names.include?(name)
       loaded_audio_channel(name)
     else
-      load_audio(audio_file_path_for(name, location))
+      load_audio(audio_file_path_for(name, location.key))
     end
   end
 
