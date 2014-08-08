@@ -5,7 +5,7 @@ class LocationsController < UIViewController
     puts "<> Initializing #{location}"
     @location = location
     @arranger = Arranger.new(location)
-     # get_directions
+    @current_coordinates ||= UIApplication.sharedApplication.delegate.current_coordinates
   end
 
   def viewDidLoad
@@ -16,9 +16,6 @@ class LocationsController < UIViewController
 
   # http://stackoverflow.com/questions/14028033/need-assistance-regarding-mkmapitem
   def within_distance_of(location)
-    #
-    #  Use accessors setup in delegate for current position ...
-    #  Arrangement should incude 'noise' if more than X meter from Location
   end
 
   def get_directions
