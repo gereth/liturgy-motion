@@ -1,11 +1,10 @@
-
 class Realization
   class <<self
 
-    def get(location, channels, &callback)
+    def get(location, current_distance, channels, &callback)
 
-      url = "%s?location=#{location}&channels=#{channels}" % config[:api_url]
-      puts url
+      url = "%s?location=#{location}&current_distance=#{current_distance}&channels=#{channels}" % config[:api_url]
+      puts "<> Request: #{url}"
       BW::HTTP.get(url, credentials: {username: 'api', password: config[:api_key]}) do |resp|
         realization = if resp.ok?
           BW::JSON.parse(resp.body)
