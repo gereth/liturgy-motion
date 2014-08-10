@@ -2,10 +2,16 @@ class Realization
   class <<self
 
     def get(location, current_distance, channels, &callback)
-
-      url = "%s?location=#{location}&current_distance=#{current_distance}&channels=#{channels}" % config[:api_url]
-      puts "<> Request: #{url}"
-      BW::HTTP.get(url, credentials: {username: 'api', password: config[:api_key]}) do |resp|
+      json = BW::JSON.generate(
+        {
+          location: location.key,
+          current_distance: current_distance,
+          lat: location.coordinate.latitude,
+          long: location.coordinate.longitude,
+          channels: channels
+        }
+      )
+      BW::HTTP.post(config[:api_url], payload: json, credentials: {username: 'api', password: config[:api_key]}) do |resp|
         realization = if resp.ok?
           BW::JSON.parse(resp.body)
         else
@@ -17,12 +23,13 @@ class Realization
 
     def config
       @config ||= {
-        api_key: config_get("API_KEY"),
-        api_url: config_get("API_URL")
+        api_key: env_get("API_KEY"),
+        api_url: env_get("API_URL")
       }
     end
 
-    def config_get(key)
+    # - Dotenv.load.each{ |k,v| app.info_plist[k] = v }
+    def env_get(key)
       NSBundle.mainBundle.infoDictionary[key]
     end
   end

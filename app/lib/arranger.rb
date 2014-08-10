@@ -68,7 +68,7 @@ class Arranger
 
   def poll_and_realize
     puts "<> Loaded channels: %s" % loaded_channel_names.inspect
-    Realization.get(location.key, current_distance, loaded_channel_names) do |resp|
+    Realization.get(location, current_distance, loaded_channel_names) do |resp|
       realize(resp)
     end
   end
