@@ -1,0 +1,5 @@
+License
+
+Copyright (c) 2014, Geoff Ereth. All rights reserved.
+
+This software is licensed under GNU GENERAL PUBLIC LICENSE Version 3: http://www.gnu.org/licenses/gpl-3.0.txt
